@@ -1,0 +1,246 @@
+--- gtk_signals.defs.orig	2026-03-31 10:14:53.188323555 +0200
++++ gtk_signals.defs	2026-03-31 10:49:45.598234372 +0200
+@@ -84,11 +84,11 @@
+   (of-object "GtkColorChooser")
+   (deprecated #t)
+   (return-type "void")
+   (flags "Run First")
+   (parameters
+-    '("GdkRGBA*" "color")
++    '("const-GdkRGBA*" "color")
+   )
+ )
+ 
+ (define-property cursor-position
+   (of-object "GtkEditable")
+@@ -480,11 +480,11 @@
+   (return-type "void")
+   (flags "Run First")
+   (parameters
+     '("GtkTreePath*" "path")
+     '("GtkTreeIter*" "iter")
+-    '("gpointer" "new_order")
++    '("int*" "new_order")
+   )
+ )
+ 
+ (define-signal sort-column-changed
+   (of-object "GtkTreeSortable")
+@@ -1656,16 +1656,17 @@
+     '("GdkRectangle*" "cell_area")
+     '("const-gchar*" "path")
+   )
+ )
+ 
++; The old name p0 is used. It occurs in a _CONVERSION() in cellarea.hg.
+ (define-signal apply-attributes
+   (of-object "GtkCellArea")
+   (return-type "void")
+   (flags "Run First")
+   (parameters
+-    '("GtkTreeModel*" "model")
++    '("GtkTreeModel*" "p0")
+     '("GtkTreeIter*" "iter")
+     '("gboolean" "is_expander")
+     '("gboolean" "is_expanded")
+   )
+ )
+@@ -3706,11 +3707,11 @@
+   (of-object "GtkCssProvider")
+   (return-type "void")
+   (flags "Run Last")
+   (parameters
+     '("GtkCssSection*" "section")
+-    '("GError*" "error")
++    '("const-GError*" "error")
+   )
+ )
+ 
+ (define-property use-header-bar
+   (of-object "GtkDialog")
+@@ -3874,11 +3875,11 @@
+   )
+ )
+ 
+ (define-signal prepare
+   (of-object "GtkDragSource")
+-  (return-type "GdkContentProvider")
++  (return-type "GdkContentProvider*")
+   (flags "Run Last")
+   (parameters
+     '("gdouble" "x")
+     '("gdouble" "y")
+   )
+@@ -4138,11 +4139,11 @@
+ (define-signal drop
+   (of-object "GtkDropTarget")
+   (return-type "gboolean")
+   (flags "Run Last")
+   (parameters
+-    '("GValue*" "value")
++    '("const-GValue*" "value")
+     '("gdouble" "x")
+     '("gdouble" "y")
+   )
+ )
+ 
+@@ -5956,11 +5957,11 @@
+   (default-value "FALSE")
+ )
+ 
+ (define-signal create-context
+   (of-object "GtkGLArea")
+-  (return-type "GdkGLContext")
++  (return-type "GdkGLContext*")
+   (flags "Run Last")
+ )
+ 
+ (define-signal render
+   (of-object "GtkGLArea")
+@@ -9611,11 +9612,11 @@
+   )
+ )
+ 
+ (define-signal create-custom-widget
+   (of-object "GtkPrintOperation")
+-  (return-type "GObject")
++  (return-type "GtkWidget*")
+   (flags "Run Last")
+ )
+ 
+ (define-signal custom-widget-apply
+   (of-object "GtkPrintOperation")
+@@ -9959,11 +9960,11 @@
+   (prop-type "GParamDouble")
+   (docs "")
+   (readable #t)
+   (writable #t)
+   (construct-only #f)
+-  (default-value "179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.000000")
++  (default-value "G_MAXDOUBLE")
+ )
+ 
+ (define-property inverted
+   (of-object "GtkRange")
+   (prop-type "GParamBoolean")
+@@ -11498,38 +11499,38 @@
+ (define-signal bind
+   (of-object "GtkSignalListItemFactory")
+   (return-type "void")
+   (flags "Run First")
+   (parameters
+-    '("GObject*" "object")
++    '("GtkListItem*" "object")
+   )
+ )
+ 
+ (define-signal setup
+   (of-object "GtkSignalListItemFactory")
+   (return-type "void")
+   (flags "Run First")
+   (parameters
+-    '("GObject*" "object")
++    '("GtkListItem*" "object")
+   )
+ )
+ 
+ (define-signal teardown
+   (of-object "GtkSignalListItemFactory")
+   (return-type "void")
+   (flags "Run First")
+   (parameters
+-    '("GObject*" "object")
++    '("GtkListItem*" "object")
+   )
+ )
+ 
+ (define-signal unbind
+   (of-object "GtkSignalListItemFactory")
+   (return-type "void")
+   (flags "Run First")
+   (parameters
+-    '("GObject*" "object")
++    '("GtkListItem*" "object")
+   )
+ )
+ 
+ (define-property autoselect
+   (of-object "GtkSingleSelection")
+@@ -11838,11 +11839,11 @@
+ (define-signal input
+   (of-object "GtkSpinButton")
+   (return-type "gint")
+   (flags "Run Last")
+   (parameters
+-    '("gpointer" "new_value")
++    '("double*" "new_value")
+   )
+ )
+ 
+ (define-signal output
+   (of-object "GtkSpinButton")
+@@ -12607,12 +12608,12 @@
+   (of-object "GtkTextBuffer")
+   (return-type "void")
+   (flags "Run Last")
+   (parameters
+     '("GtkTextTag*" "tag")
+-    '("GtkTextIter*" "start")
+-    '("GtkTextIter*" "end")
++    '("const-GtkTextIter*" "start")
++    '("const-GtkTextIter*" "end")
+   )
+ )
+ 
+ (define-signal begin-user-action
+   (of-object "GtkTextBuffer")
+@@ -12660,18 +12661,19 @@
+     '("GtkTextIter*" "location")
+     '("GdkPaintable*" "paintable")
+   )
+ )
+ 
++; The old names p1 and p2 are used. They occur in a _CONVERSION() in textbuffer.hg.
+ (define-signal insert-text
+   (of-object "GtkTextBuffer")
+   (return-type "void")
+   (flags "Run Last")
+   (parameters
+     '("GtkTextIter*" "location")
+-    '("const-gchar*" "text")
+-    '("gint" "len")
++    '("const-gchar*" "p1")
++    '("gint" "p2")
+   )
+ )
+ 
+ (define-signal mark-deleted
+   (of-object "GtkTextBuffer")
+@@ -12685,11 +12687,11 @@
+ (define-signal mark-set
+   (of-object "GtkTextBuffer")
+   (return-type "void")
+   (flags "Run Last")
+   (parameters
+-    '("GtkTextIter*" "location")
++    '("const-GtkTextIter*" "location")
+     '("GtkTextMark*" "mark")
+   )
+ )
+ 
+ (define-signal modified-changed
+@@ -12717,12 +12719,12 @@
+   (of-object "GtkTextBuffer")
+   (return-type "void")
+   (flags "Run Last")
+   (parameters
+     '("GtkTextTag*" "tag")
+-    '("GtkTextIter*" "start")
+-    '("GtkTextIter*" "end")
++    '("const-GtkTextIter*" "start")
++    '("const-GtkTextIter*" "end")
+   )
+ )
+ 
+ (define-signal undo
+   (of-object "GtkTextBuffer")

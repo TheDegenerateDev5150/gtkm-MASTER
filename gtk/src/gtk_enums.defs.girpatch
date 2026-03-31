@@ -1,0 +1,29 @@
+--- gtk_enums.defs.orig	2026-03-31 10:14:53.139323066 +0200
++++ gtk_enums.defs	2026-03-31 10:14:53.268324354 +0200
+@@ -825,18 +825,18 @@
+ 
+ (define-enum-extended NumberUpLayout
+   (in-module "Gtk")
+   (c-name "GtkNumberUpLayout")
+   (values
+-    '("lrtb" "GTK_NUMBER_UP_LAYOUT_LEFT_TO_RIGHT_TOP_TO_BOTTOM" "0")
+-    '("lrbt" "GTK_NUMBER_UP_LAYOUT_LEFT_TO_RIGHT_BOTTOM_TO_TOP" "1")
+-    '("rltb" "GTK_NUMBER_UP_LAYOUT_RIGHT_TO_LEFT_TOP_TO_BOTTOM" "2")
+-    '("rlbt" "GTK_NUMBER_UP_LAYOUT_RIGHT_TO_LEFT_BOTTOM_TO_TOP" "3")
+-    '("tblr" "GTK_NUMBER_UP_LAYOUT_TOP_TO_BOTTOM_LEFT_TO_RIGHT" "4")
+-    '("tbrl" "GTK_NUMBER_UP_LAYOUT_TOP_TO_BOTTOM_RIGHT_TO_LEFT" "5")
+-    '("btlr" "GTK_NUMBER_UP_LAYOUT_BOTTOM_TO_TOP_LEFT_TO_RIGHT" "6")
+-    '("btrl" "GTK_NUMBER_UP_LAYOUT_BOTTOM_TO_TOP_RIGHT_TO_LEFT" "7")
++    '("left-to-right-top-to-bottom" "GTK_NUMBER_UP_LAYOUT_LEFT_TO_RIGHT_TOP_TO_BOTTOM" "0")
++    '("left-to-right-bottom-to-top" "GTK_NUMBER_UP_LAYOUT_LEFT_TO_RIGHT_BOTTOM_TO_TOP" "1")
++    '("right-to-left-top-to-bottom" "GTK_NUMBER_UP_LAYOUT_RIGHT_TO_LEFT_TOP_TO_BOTTOM" "2")
++    '("right-to-left-bottom-to-top" "GTK_NUMBER_UP_LAYOUT_RIGHT_TO_LEFT_BOTTOM_TO_TOP" "3")
++    '("top-to-bottom-left-to-right" "GTK_NUMBER_UP_LAYOUT_TOP_TO_BOTTOM_LEFT_TO_RIGHT" "4")
++    '("top-to-bottom-right-to-left" "GTK_NUMBER_UP_LAYOUT_TOP_TO_BOTTOM_RIGHT_TO_LEFT" "5")
++    '("bottom-to-top-left-to-right" "GTK_NUMBER_UP_LAYOUT_BOTTOM_TO_TOP_LEFT_TO_RIGHT" "6")
++    '("bottom-to-top-right-to-left" "GTK_NUMBER_UP_LAYOUT_BOTTOM_TO_TOP_RIGHT_TO_LEFT" "7")
+   )
+ )
+ 
+ (define-enum-extended Ordering
+   (in-module "Gtk")
