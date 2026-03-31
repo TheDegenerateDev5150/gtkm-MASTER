@@ -73,6 +73,7 @@ public:
    * @newin{4,20}
    */
   using ArrayPlanes = std::array<gsize, 4>;
+#m4 _EQUAL(gsize,gsize*)dnl// 'gsize xyz[4]' is equal to 'gsize* xyz'
 #m4 _CONVERSION(`ArrayPlanes&',`gsize',`$3.data()')
   _WRAP_METHOD(Glib::RefPtr<Glib::Bytes> download_bytes_with_planes(
     ArrayPlanes& out_offsets, ArrayPlanes& out_strides) const,

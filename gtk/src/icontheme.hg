@@ -87,6 +87,7 @@ public:
 #m4 _CONVERSION(`int*',`std::vector<int>',`Glib::ArrayHandler<int>::array_to_vector($3, Glib::OWNERSHIP_SHALLOW)')
   _WRAP_METHOD(std::vector<int> get_icon_sizes(const Glib::ustring& icon_name) const, gtk_icon_theme_get_icon_sizes)
 
+#m4 _EQUAL(const char**, const char*[])
 #m4 _CONVERSION(`const std::vector<Glib::ustring>&',`const char*[]',`const_cast<const char**>(Glib::ArrayHandler<Glib::ustring>::vector_to_array($3).data())')
   _WRAP_METHOD(Glib::RefPtr<IconPaintable> lookup_icon(const Glib::ustring& icon_name,
     const std::vector<Glib::ustring>& fallbacks{?}, int size, int scale = 1, TextDirection direction = TextDirection::NONE,
