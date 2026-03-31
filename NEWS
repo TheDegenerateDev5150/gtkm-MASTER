@@ -3,9 +3,6 @@
 Some unstable API has been removed.
 The corresponding API was removed in gtk 4.22.0.
 
-* Fix build with build-deprecated-api=false.
-  (Kjell Ahlstedt)
-
 Gtk:
 * Add TryExpression.
 * FileFilter: Add add_mime_types().
@@ -23,6 +20,7 @@ Tests:
 
 Build:
 * Require gtk4 >= 4.22.0
+* Fix build with build-deprecated-api=false.
   (Kjell Ahlstedt)
 
 
