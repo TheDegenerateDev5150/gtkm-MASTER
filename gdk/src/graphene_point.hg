@@ -83,7 +83,6 @@ public:
   std::array<float,3> distance(const Point& b) const;
   _IGNORE(graphene_point_distance)
 
-  _WRAP_METHOD(float distance_squared(const Point& b) const, graphene_point_distance_squared, newin "4,24")
   _WRAP_METHOD(bool near(const Point& b, float epsilon) const, graphene_point_near, newin "4,12")
 
   /** Linearly interpolates the coordinates of this point and point @a b using the
