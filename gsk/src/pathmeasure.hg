@@ -1,0 +1,71 @@
+/* Copyright (C) 2026 The gtkmm Development Team
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+_CONFIGINCLUDE(gskmmconfig.h)
+
+_DEFS(gskmm,gsk)
+
+#include <glibmm/refptr.h>
+#include <gskmm/pathpoint.h>
+#include <gsk/gsk.h> // GskPathMeasure
+#include <optional>
+
+namespace Gsk
+{
+class GSKMM_API Path;
+
+/** Performs measurements on paths such as determining the length of the path.
+ *
+ * Many measuring operations require sampling the path length
+ * at intermediate points. Therefore, a %Gsk::PathMeasure has
+ * a tolerance that determines what precision is required
+ * for such approximations.
+ *
+ * @newin{4,24}
+ */
+class GSKMM_API PathMeasure final
+{
+  // GskPathMeasure is registered as a boxed type, but it has custom
+  // reference-counting instead of copy/free functions, so we use it via RefPtr.
+  _CLASS_OPAQUE_REFCOUNTED(PathMeasure, GskPathMeasure, NONE, gsk_path_measure_ref, gsk_path_measure_unref, GSKMM_API)
+  // Necessary if used in _WRAP_PROPERTY: _IS_REFCOUNTED_BOXEDTYPE dnl// Generate a Glib::Value specialization
+  _IGNORE(gsk_path_measure_ref, gsk_path_measure_unref)
+
+public:
+  _WRAP_METHOD(static Glib::RefPtr<PathMeasure> create(const Glib::RefPtr<const Path>& path),
+    gsk_path_measure_new, newin "4,24")
+  _WRAP_METHOD(static Glib::RefPtr<PathMeasure> create(const Glib::RefPtr<const Path>& path,
+    float tolerance), gsk_path_measure_new_with_tolerance, newin "4,24")
+  // Gsk::Path is immutable. No need for a non-const get-method.
+  _WRAP_METHOD(Glib::RefPtr<Path> get_path() const, gsk_path_measure_get_path,
+    refreturn, newin "4,24")
+  _WRAP_METHOD(float get_tolerance() const, gsk_path_measure_get_tolerance, newin "4,24")
+  _WRAP_METHOD(float get_length() const, gsk_path_measure_get_length, newin "4,24")
+
+  /** Gets the point at the given distance into the path.
+   *
+   * An empty path has no points, so no value is returned in that case.
+   *
+   * @newin{4,24}
+   *
+   * @param distance The distance.
+   * @return The point, if it was set.
+   */
+  std::optional<PathPoint> get_point(float distance);
+  _IGNORE(gsk_path_measure_get_point)
+};
+
+} // namespace Gsk

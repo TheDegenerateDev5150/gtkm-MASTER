@@ -1,0 +1,112 @@
+/* Copyright (C) 2026 The gtkmm Development Team
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include <gskmm/stroke.h>
+
+namespace
+{
+extern "C"
+{
+// Why static? Because non-static functions with C linkage get external linkage,
+// even if they are defined in an anonymous namespace.
+static gboolean Path_foreach_callback(GskPathOperation op, const graphene_point_t* pts,
+  gsize n_pts, float weight, gpointer user_data)
+{
+  auto slot = static_cast<Gsk::Path::SlotForeach*>(user_data);
+  std::vector<Gdk::Graphene::Point> cpp_pts;
+  for (auto pt = pts; pt < pts+n_pts; ++pt)
+    cpp_pts.emplace_back(const_cast<graphene_point_t*>(pt), true);
+
+  return (*slot)(static_cast<Gsk::Path::Operation>(op), cpp_pts, weight);
+}
+
+static gboolean Path_intersection_callback(GskPath* path1, const GskPathPoint* point1,
+  GskPath* path2, const GskPathPoint* point2, GskPathIntersection kind, gpointer user_data)
+{
+  auto slot = static_cast<Gsk::Path::SlotIntersection*>(user_data);
+  auto cpp_path1 = Glib::wrap(path1, true);
+  auto cpp_point1 = Glib::wrap(point1);
+  auto cpp_path2 = Glib::wrap(path2, true);
+  auto cpp_point2 = Glib::wrap(point2);
+
+  return (*slot)(cpp_path1, cpp_point1, cpp_path2, cpp_point2,
+    static_cast<Gsk::Path::Intersection>(kind));
+}
+
+} // extern "C"
+} // anonymous namespace
+
+namespace Gsk
+{
+std::optional<Gdk::Graphene::Rect> Path::get_bounds() const
+{
+  Gdk::Graphene::Rect bounds(0.0, 0.0, 0.0, 0.0);
+  const bool result = gsk_path_get_bounds(const_cast<GskPath*>(gobj()), bounds.gobj());
+  if (!result)
+    return {};
+  return bounds;
+}
+
+std::optional<Gdk::Graphene::Rect> Path::get_tight_bounds() const
+{
+  Gdk::Graphene::Rect bounds(0.0, 0.0, 0.0, 0.0);
+  const bool result = gsk_path_get_tight_bounds(const_cast<GskPath*>(gobj()), bounds.gobj());
+  if (!result)
+    return {};
+  return bounds;
+}
+
+std::optional<Gdk::Graphene::Rect> Path::get_stroke_bounds(const Stroke& stroke) const
+{
+  Gdk::Graphene::Rect bounds(0.0, 0.0, 0.0, 0.0);
+  const bool result = gsk_path_get_stroke_bounds(const_cast<GskPath*>(gobj()),
+    stroke.gobj(), bounds.gobj());
+  if (!result)
+    return {};
+  return bounds;
+}
+
+std::optional<PathPoint> Path::get_start_point() const
+{
+  PathPoint point;
+  const bool result = gsk_path_get_start_point(const_cast<GskPath*>(gobj()), point.gobj());
+  if (!result)
+    return {};
+  return point;
+}
+
+std::optional<PathPoint> Path::get_end_point() const
+{
+  PathPoint result;
+  const bool success = gsk_path_get_end_point(const_cast<GskPath*>(gobj()), result.gobj());
+  if (!success)
+    return {};
+  return result;
+}
+
+std::optional<std::pair<PathPoint,float>> Path::get_closest_point(
+  const Gdk::Graphene::Point& point, float threshold) const
+{
+  PathPoint result;
+  float distance = 0.0;
+  const bool success = gsk_path_get_closest_point(const_cast<GskPath*>(gobj()),
+    point.gobj(), threshold, result.gobj(), &distance);
+  if (!success)
+    return {};
+  return std::pair<PathPoint,float>{result, distance};
+}
+
+} // namespace Gsk

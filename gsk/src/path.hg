@@ -1,0 +1,215 @@
+/* Copyright (C) 2026 The gtkmm Development Team
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+_CONFIGINCLUDE(gskmmconfig.h)
+
+_DEFS(gskmm,gsk)
+
+#include <glibmm/refptr.h>
+#include <gdkmm/graphene_rect.h>
+#include <gskmm/pathpoint.h>
+#include <cairomm/context.h>
+#include <gsk/gsk.h> // GskPath
+#include <optional>
+#include <utility> // std::pair
+#include <vector>
+
+namespace Gsk
+{
+class GSKMM_API Stroke;
+
+/** Describes lines and curves that are more complex than simple rectangles.
+ *
+ * Paths can be used for rendering (filling or stroking) and for animations
+ * (e.g. as trajectories).
+ *
+ * %Gsk::Path is an immutable, opaque, reference-counted struct.
+ * After creation, you cannot change the types it represents. Instead,
+ * new %Gsk::Path objects have to be created. The Gsk::PathBuilder
+ * structure is meant to help in this endeavor.
+ *
+ * Conceptually, a path consists of zero or more contours (continuous, connected
+ * curves), each of which may or may not be closed. Contours are typically
+ * constructed from Bézier segments.
+ *
+ * <picture>
+ *   <source srcset="path-dark.png" media="(prefers-color-scheme: dark)">
+ *   <img alt="A Path" src="path-light.png">
+ * </picture>
+ *
+ * @newin{4,24}
+ */
+class GSKMM_API Path final
+{
+  // GskPath is registered as a boxed type, but it has custom
+  // reference-counting instead of copy/free functions, so we use it via RefPtr.
+  _CLASS_OPAQUE_REFCOUNTED(Path, GskPath, NONE, gsk_path_ref, gsk_path_unref, GSKMM_API)
+  // Necessary if used in _WRAP_PROPERTY: _IS_REFCOUNTED_BOXEDTYPE dnl// Generate a Glib::Value specialization
+  _IGNORE(gsk_path_ref, gsk_path_unref)
+
+public:
+  _WRAP_ENUM(ForeachFlags, GskPathForeachFlags, decl_prefix GSKMM_API, newin "4,24")
+  _WRAP_ENUM(Intersection, GskPathIntersection, decl_prefix GSKMM_API, newin "4,24")
+  _WRAP_ENUM(Operation, GskPathOperation, decl_prefix GSKMM_API, newin "4,24")
+
+  /** Type of the callback to iterate through the operations of a path.
+   *
+   * For each operation, the callback is given the @a op itself, the points
+   * that the operation is applied to in @a pts, and a @a weight for conic curves.
+   *
+   * Each contour of the path starts with a Gsk::Path::Operation::MOVE operation.
+   * Closed contours end with a Gsk::Path::Operation::CLOSE operation.
+   *
+   * @newin{4,24}
+   *
+   * @param op The operation.
+   * @param pts The points of the operation.
+   * @param weight The weight for conic curves, or unused if not a conic curve.
+   * @return <tt>true</tt> to continue iterating the path, <tt>false</tt> to
+   *   immediately abort and not call the function again.
+   */
+  using SlotForeach = sigc::slot<bool(Operation, const std::vector<Gdk::Graphene::Point>&, float)>;
+
+  /** Type of the callback to iterate through the intersections of two paths.
+   *
+   * @newin{4,24}
+   *
+   * @param path1 The first path.
+   * @param point1 The intersection as point on @a path1.
+   * @param path2 The second path.
+   * @param point2 The intersection as point on @a path2.
+   * @param kind The nature of the intersection.
+   * @return <tt>true</tt> to continue iterating, <tt>false</tt> to
+   *   stop the iteration and not call the function again
+   */
+  using SlotIntersection = sigc::slot<bool(const Glib::RefPtr<Path>&,
+    const PathPoint&, const Glib::RefPtr<Path>&, const PathPoint&, Intersection kind)>;
+
+  _WRAP_METHOD(Glib::ustring to_string() const, gsk_path_to_string, newin "4,24")
+  _IGNORE(gsk_path_print)
+  _WRAP_METHOD(static Glib::RefPtr<Path> parse(const Glib::ustring& string),
+    gsk_path_parse, newin "4,24")
+  _WRAP_METHOD(void to_cairo(const ::Cairo::RefPtr< ::Cairo::Context>& cr) const,
+    gsk_path_to_cairo, newin "4,24")
+  _WRAP_METHOD(bool is_empty() const, gsk_path_is_empty, newin "4,24")
+  _WRAP_METHOD(bool is_closed() const, gsk_path_is_closed, newin "4,24")
+
+  /** Computes the bounds of the given path.
+   *
+   * The returned bounds may be larger than necessary, because this
+   * function aims to be fast, not accurate. The bounds are guaranteed
+   * to contain the path. For accurate bounds, use get_tight_bounds().
+   *
+   * It is possible that the returned rectangle has 0 width and/or height.
+   * This can happen when the path only describes a point or an
+   * axis-aligned line.
+   *
+   * If the path is empty, no value is returned. This is different from the case
+   * where the path is a single point at the origin, where a zero rectangle
+   * is returned.
+   *
+   * @newin{4,24}
+   *
+   * @return The bounds of this path, if any.
+   */
+  std::optional<Gdk::Graphene::Rect> get_bounds() const;
+  _IGNORE(gsk_path_get_bounds)
+
+  /** Computes the tight bounds of the given path.
+   *
+   * This function works harder than get_bounds() to
+   * produce the smallest possible bounds.
+   *
+   * @newin{4,24}
+   *
+   * @return The bounds of this path, if any. See get_bounds().
+   */
+  std::optional<Gdk::Graphene::Rect> get_tight_bounds() const;
+  _IGNORE(gsk_path_get_tight_bounds)
+
+  /** Computes the bounds for stroking the given path with the
+   * given parameters.
+   *
+   * The returned bounds may be larger than necessary, because this
+   * function aims to be fast, not accurate. The bounds are guaranteed
+   * to contain the area affected by the stroke, including protrusions
+   * like miters.
+   *
+   * @newin{4,24}
+   *
+   * @param stroke Stroke parameters.
+   * @return The bounds of this path, if any. See get_bounds().
+   */
+  std::optional<Gdk::Graphene::Rect> get_stroke_bounds(const Stroke& stroke) const;
+  _IGNORE(gsk_path_get_stroke_bounds)
+
+  _WRAP_METHOD(bool in_fill(const Gdk::Graphene::Point& point, FillRule fill_rule) const,
+    gsk_path_in_fill, newin "4,24")
+
+  /** Gets the start point of the path.
+   *
+   * An empty path has no points, so no value is returned in this case.
+   *
+   * @newin{4,24}
+   *
+   * @return The start point, if any.
+   */
+  std::optional<PathPoint> get_start_point() const;
+  _IGNORE(gsk_path_get_start_point)
+
+  /** Gets the end point of the path.
+   *
+   * An empty path has no points, so no value is returned in this case.
+   *
+   * @newin{4,24}
+   *
+   * @return The end point, if any.
+   */
+  std::optional<PathPoint> get_end_point() const;
+  _IGNORE(gsk_path_get_end_point)
+
+  _WRAP_METHOD(bool get_next(PathPoint& point) const, gsk_path_get_next, newin "4,24")
+  _WRAP_METHOD(bool get_previous(PathPoint& point) const,
+    gsk_path_get_previous, newin "4,24")
+
+  /** Computes the closest point on the path to the given point.
+   *
+   * If there is no point closer than the given @a threshold, no value is returned.
+   *
+   * @newin{4,24}
+   *
+   * @param point The point.
+   * @param threshold Maximum allowed distance.
+   * @return {closest_point, distance}, if there is a point within @a threshold.
+   */
+  std::optional<std::pair<PathPoint,float>> get_closest_point(const Gdk::Graphene::Point& point,
+    float threshold) const;
+  _IGNORE(gsk_path_get_closest_point)
+
+  _WRAP_METHOD(bool foreach(ForeachFlags flags, const SlotForeach& slot{func}),
+    gsk_path_foreach, slot_name slot, slot_callback Path_foreach_callback,
+    no_slot_copy, newin "4,24")
+
+  _WRAP_METHOD(bool equal(const Glib::RefPtr<const Path>& path2) const,
+    gsk_path_equal, newin "4,24")
+
+  _WRAP_METHOD(bool foreach_intersection(const Glib::RefPtr<const Path>& path2,
+    const SlotIntersection& slot{func}),
+    gsk_path_foreach_intersection, slot_name slot, slot_callback Path_intersection_callback,
+    no_slot_copy, newin "4,24")
+};
+
+} // namespace Gsk

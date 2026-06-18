@@ -20,6 +20,7 @@ _DEFS(gskmm,gsk)
 
 #include <glibmm/refptr.h>
 #include <glibmm/ustring.h>
+#include <glibmm/value.h>
 #include <gdkmm/graphene_point.h>
 #include <gdkmm/graphene_rect.h>
 #include <gsk/gsk.h> // For GskTransform

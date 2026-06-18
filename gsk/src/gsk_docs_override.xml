@@ -1,3 +1,12 @@
 <root>
+<substitute_enumerator_name from_prefix="GSK_LINE_CAP_" to_prefix="Gsk::LineCap::" />
+<substitute_enumerator_name from_prefix="GSK_LINE_JOIN_" to_prefix="Gsk::LineJoin::" />
 <substitute_enumerator_name from_prefix="GSK_TRANSFORM_CATEGORY_2D" to_prefix="Gsk::Transform::Category::CAT_2D" />
+<!-- Some enums have enumerators without unique prefixes. Handle these enumerators individually. -->
+<substitute_enumerator_name from="GSK_PATH_MOVE" to="Gdk::Path::Operation::MOVE" />
+<substitute_enumerator_name from="GSK_PATH_CLOSE" to="Gdk::Path::Operation::CLOSE" />
+<substitute_enumerator_name from="GSK_PATH_LINE" to="Gdk::Path::Operation::LINE" />
+<substitute_enumerator_name from="GSK_PATH_QUAD" to="Gdk::Path::Operation::QUAD" />
+<substitute_enumerator_name from="GSK_PATH_CUBIC" to="Gdk::Path::Operation::CUBIC" />
+<substitute_enumerator_name from="GSK_PATH_CONIC" to="Gdk::Path::Operation::CONIC" />
 </root>

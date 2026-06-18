@@ -1,4 +1,4 @@
-/* Copyright (C) 2025 The gtkmm Development Team
+/* Copyright (C) 2026 The gtkmm Development Team
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -14,15 +14,16 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _GSKMM_GSKMM_H_
-#define _GSKMM_GSKMM_H_
+#include <gskmm/path.h>
 
-#include <gdkmm.h>
-
-#include <gskmm/pathbuilder.h>
-#include <gskmm/pathmeasure.h>
-#include <gskmm/roundedrect.h>
-#include <gskmm/stroke.h>
-#include <gskmm/transform.h>
-
-#endif /* _GSKMM_GSKMM_H_ */
+namespace Gsk
+{
+std::optional<PathPoint> PathMeasure::get_point(float distance)
+{
+  PathPoint out_point;
+  const bool result = gsk_path_measure_get_point(gobj(), distance, out_point.gobj());
+  if (!result)
+    return {};
+  return out_point;
+}
+} // namespace Gsk

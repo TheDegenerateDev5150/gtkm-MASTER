@@ -1,0 +1,130 @@
+/* Copyright (C) 2026 The gtkmm Development Team
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+_CONFIGINCLUDE(gskmmconfig.h)
+
+_DEFS(gskmm,gsk)
+
+#include <gdkmm/graphene_point.h>
+#include <gdkmm/graphene_vec2.h>
+#include <gskmm/enums.h>
+#include <gsk/gsk.h> // GskPathPoint
+#include <utility> // std::pair
+
+namespace Gsk
+{
+class GSKMM_API Path;
+class GSKMM_API PathMeasure;
+
+/** Represents a point on a path.
+ *
+ * It can be queried for properties of the path at that point,
+ * such as its tangent or its curvature.
+ *
+ * To obtain a %Gsk::PathPoint, use Gsk::Path::get_closest_point(),
+ * Gsk::Path::get_start_point(), Gsk::Path::get_end_point()
+ * or Gsk::PathMeasure::get_point().
+ *
+ * Note that %Gsk::PathPoint structs are meant to be stack-allocated,
+ * and don't hold a reference to the path object they are obtained from.
+ * It is the callers responsibility to keep a reference to the path
+ * as long as the %Gsk::PathPoint is used.
+ *
+ * @newin{4,24}
+ */
+class GSKMM_API PathPoint
+{
+  _CLASS_BOXEDTYPE_STATIC(PathPoint, GskPathPoint, GSKMM_API)
+  _IGNORE(gsk_path_point_copy, gsk_path_point_free)
+
+public:
+  _WRAP_METHOD(bool equal(const PathPoint& point2) const, gsk_path_point_equal, newin "4,24")
+  _WRAP_METHOD(int compare(const PathPoint& point2) const, gsk_path_point_compare, newin "4,24")
+
+  /** Gets the position of the point.
+   *
+   * @newin{4,24}
+   *
+   * @param path The path that this @a point is on.
+   * @return The coordinates of the point.
+   */
+  Gdk::Graphene::Point get_position(const Glib::RefPtr<const Path>& path) const;
+  _IGNORE(gsk_path_point_get_position)
+
+  /** Gets the tangent of the path at this point.
+   *
+   * Note that certain points on a path may not have a single
+   * tangent, such as sharp turns. At such points, there are
+   * two tangents — the direction of the path going into the
+   * point, and the direction coming out of it. The @a direction
+   * argument lets you choose which one to get.
+   *
+   * If the path is just a single point (e.g. a circle with
+   * radius zero), then the tangent is set to `0, 0`.
+   *
+   * If you want to orient something in the direction of the
+   * path, get_rotation() may be more convenient to use.
+   *
+   * @newin{4,24}
+   *
+   * @param path The path that this point is on.
+   * @param direction The direction for which to return the tangent.
+   * @return The tangent at this point.
+   */
+  Gdk::Graphene::Vec2 get_tangent(const Glib::RefPtr<const Path>& path,
+    PathDirection direction) const;
+  _IGNORE(gsk_path_point_get_tangent)
+
+  _WRAP_METHOD(float get_rotation(const Glib::RefPtr<const Path>& path,
+    PathDirection direction) const, gsk_path_point_get_rotation, newin "4,24")
+
+  /** Calculates the curvature of the path at this point.
+   *
+   * Returns the center of the osculating circle as well.
+   * The curvature is the inverse of the radius of the osculating circle.
+   *
+   * Lines have a curvature of zero (indicating an osculating circle of
+   * infinite radius). In this case, the @a center is set to `0, 0`.
+   *
+   * Circles with a radius of zero have `INFINITY` as curvature.
+   *
+   * Note that certain points on a path may not have a single curvature,
+   * such as sharp turns. At such points, there are two curvatures — the
+   * (limit of) the curvature of the path going into the point, and the
+   * (limit of) the curvature of the path coming out of it. The @a direction
+   * argument lets you choose which one to get.
+   *
+   * <picture>
+   * <source srcset="curvature-dark.png" media="(prefers-color-scheme: dark)">
+   * <img alt="Osculating circle" src="curvature-light.png">
+   * </picture>
+   * 
+   * @newin{4,24}
+   * 
+   * @param path The path that this point is on.
+   * @param direction The direction for which to return the curvature.
+   * @return {curvature, center} The curvature of the path at this point
+   *         and the center of the osculating circle.
+   */
+  std::pair<float, Gdk::Graphene::Point> get_curvature(const Glib::RefPtr<const Path>& path,
+    PathDirection direction) const;
+  _IGNORE(gsk_path_point_get_curvature)
+
+  _WRAP_METHOD(float get_distance(const Glib::RefPtr<const PathMeasure>& measure) const,
+    gsk_path_point_get_distance, newin "4,24")
+};
+
+} // namespace Gsk

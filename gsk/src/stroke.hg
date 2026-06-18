@@ -1,0 +1,95 @@
+/* Copyright (C) 2026 The gtkmm Development Team
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+_CONFIGINCLUDE(gskmmconfig.h)
+
+_DEFS(gskmm,gsk)
+
+#include <gskmm/enums.h>
+#include <cairomm/context.h>
+#include <gsk/gsk.h> // GskStroke
+#include <vector>
+
+namespace Gsk
+{
+/** Collects the parameters that are needed when stroking a path.
+ *
+ * @newin{4,24}
+ */
+class GSKMM_API Stroke
+{
+  _CLASS_BOXEDTYPE(Stroke, GskStroke, NONE, gsk_stroke_copy, gsk_stroke_free, GSKMM_API)
+  _IGNORE(gsk_stroke_copy, gsk_stroke_free)
+
+public:
+  Stroke(float line_width);
+
+  _WRAP_METHOD(bool equal(const Stroke& stroke2) const, gsk_stroke_equal, newin "4,24")
+  _WRAP_METHOD(void set_line_width(float line_width), gsk_stroke_set_line_width, newin "4,24")
+  _WRAP_METHOD(float get_line_width() const, gsk_stroke_get_line_width, newin "4,24")
+  _WRAP_METHOD(void _set_line_cap(LineCap line_cap), gsk_stroke_set_line_cap, newin "4,24")
+  _WRAP_METHOD(LineCap get_line_cap() const, gsk_stroke_get_line_cap, newin "4,24")
+  _WRAP_METHOD(void _set_line_join(LineJoin line_join), gsk_stroke_set_line_join, newin "4,24")
+  _WRAP_METHOD(LineJoin get_line_join() const, gsk_stroke_get_line_join, newin "4,24")
+  _WRAP_METHOD(void set_miter_limit(float limit), gsk_stroke_set_miter_limit, newin "4,24")
+  _WRAP_METHOD(float get_miter_limit() const, gsk_stroke_get_miter_limit, newin "4,24")
+
+  /** Sets the dash pattern to use.
+   *
+   * A dash pattern is specified by a vector of alternating non-negative
+   * values. Each value provides the length of alternate "on" and "off"
+   * portions of the stroke.
+   *
+   * Each "on" segment will have caps applied as if the segment were a
+   * separate contour. In particular, it is valid to use an "on" length
+   * of 0 with Gsk::LineCap::ROUND or Gsk::LineCap::SQUARE
+   * to draw dots or squares along a path.
+   * 
+   * If @a dash is an empty vector, if all elements in @a dash are 0, or if there are
+   * negative values in @a dash, then dashing is disabled.
+   *
+   * If @a dash.size() is 1, an alternating "on" and "off" pattern with the
+   * single dash length provided is assumed.
+   *
+   * If @a dash.size() is uneven, the dash vector will be used with the first
+   * element in @a dash defining an "on" or "off" in alternating passes
+   * through the vector.
+   *
+   * You can specify a starting offset into the dash with set_dash_offset().
+   *
+   * @newin{4,24}
+   *
+   * @param dash The vector of dashes.
+   */
+  void set_dash(const std::vector<float>& dash);
+  _IGNORE(gsk_stroke_set_dash)
+
+  /** Gets the dash vector in use.
+   *
+   * @newin{4,24}
+   *
+   * @return The dash vector. Can be empty.
+   */
+  std::vector<float> get_dash() const;
+  _IGNORE(gsk_stroke_get_dash)
+
+  _WRAP_METHOD(void set_dash_offset(float offset), gsk_stroke_set_dash_offset, newin "4,24")
+  _WRAP_METHOD(float get_dash_offset() const, gsk_stroke_get_dash_offset, newin "4,24")
+  _WRAP_METHOD(void to_cairo(const ::Cairo::RefPtr< ::Cairo::Context>& cr) const, 
+    gsk_stroke_to_cairo, newin "4,24")
+};
+
+} // namespace Gsk

@@ -27,7 +27,12 @@ endforeach
 # Generated from pairs of .hg and .ccg files.
 gskmm_any_hg_ccg_basenames = [
   'enums',
+  'path',
+  'pathbuilder',
+  'pathmeasure',
+  'pathpoint',
   'roundedrect',
+  'stroke',
   'transform',
 ]
 

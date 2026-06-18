@@ -1,0 +1,46 @@
+/* Copyright (C) 2026 The gtkmm Development Team
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include <gskmm/path.h>
+#include <gskmm/pathmeasure.h>
+
+namespace Gsk
+{
+Gdk::Graphene::Point PathPoint::get_position(const Glib::RefPtr<const Path>& path) const
+{
+  Gdk::Graphene::Point position(0.0f, 0.0f);
+  gsk_path_point_get_position(gobj(), const_cast<GskPath*>(path->gobj()), position.gobj());
+  return position;
+}
+
+Gdk::Graphene::Vec2 PathPoint::get_tangent(const Glib::RefPtr<const Path>& path,
+  PathDirection direction) const
+{
+  Gdk::Graphene::Vec2 tangent(0.0f, 0.0f);
+  gsk_path_point_get_tangent(gobj(), const_cast<GskPath*>(path->gobj()), static_cast<GskPathDirection>(direction),
+    tangent.gobj());
+  return tangent;
+}
+
+std::pair<float, Gdk::Graphene::Point> PathPoint::get_curvature(const Glib::RefPtr<const Path>& path,
+    PathDirection direction) const
+{
+  Gdk::Graphene::Point center(0.0f, 0.0f);
+  const float curvature = gsk_path_point_get_curvature(gobj(), const_cast<GskPath*>(path->gobj()),
+    static_cast<GskPathDirection>(direction), center.gobj());
+  return {curvature, center};
+}
+} // namespace Gsk

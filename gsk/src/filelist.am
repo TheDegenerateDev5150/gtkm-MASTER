@@ -12,7 +12,12 @@ gskmm_files_defs = \
 
 gskmm_files_any_hg = \
   enums.hg \
+  path.hg \
+  pathbuilder.hg \
+  pathmeasure.hg \
+  pathpoint.hg \
   roundedrect.hg \
+  stroke.hg
   transform.hg
 
 gskmm_files_deprecated_hg =

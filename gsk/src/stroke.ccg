@@ -1,4 +1,4 @@
-/* Copyright (C) 2025 The gtkmm Development Team
+/* Copyright (C) 2026 The gtkmm Development Team
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -14,15 +14,25 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _GSKMM_GSKMM_H_
-#define _GSKMM_GSKMM_H_
+namespace Gsk
+{
+Stroke::Stroke(float line_width)
+:
+  gobject_(gsk_stroke_new(line_width))
+{
+}
 
-#include <gdkmm.h>
+void Stroke::set_dash(const std::vector<float>& dash)
+{
+  gsk_stroke_set_dash(gobj(), dash.data(), dash.size());
+}
 
-#include <gskmm/pathbuilder.h>
-#include <gskmm/pathmeasure.h>
-#include <gskmm/roundedrect.h>
-#include <gskmm/stroke.h>
-#include <gskmm/transform.h>
-
-#endif /* _GSKMM_GSKMM_H_ */
+std::vector<float> Stroke::get_dash() const
+{
+  gsize n_dash = 0;
+  const float* c_dash = gsk_stroke_get_dash(gobj(), &n_dash);
+  if (!c_dash)
+    return {};
+  return {c_dash, c_dash+n_dash};
+}
+} // namespace Gsk
