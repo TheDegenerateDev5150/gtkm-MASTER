@@ -1,0 +1,139 @@
+/* Copyright (C) 2026 The gtkmm Development Team
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ */
+ 
+_CONFIGINCLUDE(gdkmmconfig.h)
+_DEFS(gdkmm,gdk)
+
+#include <graphene.h>
+#include <array>
+
+namespace Gdk
+{
+namespace Graphene
+{
+class GDKMM_API Point;
+
+/** A vector with two dimensions, x and y.
+ *
+ * @newin{4,24}
+ */
+class GDKMM_API Vec2
+{
+  _CLASS_GENERIC(Vec2, graphene_vec2_t)
+  _IGNORE(graphene_vec2_init, graphene_vec2_init_from_vec2,
+    graphene_vec2_init_from_float, graphene_vec2_free)
+public:
+  Vec2();
+  Vec2(float x, float y);
+  Vec2(const Point& src);
+
+  /** Stores the components of this vector into an array.
+   *
+   * @newin{4,24}
+   *
+   * @return An array of floating point values with 2 elements.
+   */
+  std::array<float,2> to_float() const;
+  _IGNORE(graphene_vec2_to_float)
+
+  /** Adds each component of two vectors.
+   *
+   * @newin{4,24}
+   *
+   * @param other A vector to add to this vector.
+   * @return The sum of this vector and the other vector.
+   */
+  Vec2 add(const Vec2& other) const;
+  _IGNORE(graphene_vec2_add)
+
+  /** Subtracts each component of the @a other vector from this vector.
+   *
+   * @newin{4,24}
+   *
+   * @param other A vector to subtract from this vector.
+   * @return The difference between this vector and the other vector.
+   */
+  Vec2 subtract(const Vec2& other) const;
+  _IGNORE(graphene_vec2_subtract)
+
+  //TODO:? Some graphene_vec2_*() methods are not wrapped in C++ code, because I
+  // don't understand what they are good for. They can be added to Gdk::Graphene::Vec2
+  // if anyone needs them. /kjellahl 2026-06-14
+  // Vec2 multiply(const Vec2& other) const;
+  // Vec2 divide(const Vec2& other) const;
+
+  _WRAP_METHOD(float dot(const Vec2& other) const, graphene_vec2_dot, newin "4,24")
+  _WRAP_METHOD(float length() const, graphene_vec2_length, newin "4,24")
+
+  /** Computes the normalized vector for the given vector.
+   *
+   * @newin{4,24}
+   *
+   * @return The normalized vector.
+   */
+  Vec2 normalize() const;
+  _IGNORE(graphene_vec2_normalize)
+
+  /** Multiplies all components of this vector with the given scalar @a factor.
+   *
+   * @newin{4,24}
+   * 
+   * @param factor The scalar factor.
+   * @return The scaled vector.
+   */
+  Vec2 scale(float factor) const;
+  _IGNORE(graphene_vec2_scale)
+
+  /** Negates this vector.
+   *
+   * @newin{4,24}
+   *
+   * @return The negated vector.
+   */
+  Vec2 negate() const;
+  _IGNORE(graphene_vec2_negate)
+
+  _WRAP_METHOD(bool near(const Vec2& other, float epsilon) const,
+    graphene_vec2_near, newin "4,24")
+  _WRAP_METHOD(bool equal(const Vec2& other) const, graphene_vec2_equal, newin "4,24")
+
+  // Vec2 min(const Vec2& other) const;
+  // Vec2 max(const Vec2& other) const;
+
+  /** Linearly interpolates this vector and @a other using the given @a factor.
+   *
+   * @newin{4,24}
+   *
+   * @param other The other vector.
+   * @param factor The interpolation factor.
+   * @return The interpolated vector.
+   */
+  Vec2 interpolate(const Vec2& other, double factor) const;
+  _IGNORE(graphene_vec2_interpolate)
+
+  _WRAP_METHOD(float get_x() const, graphene_vec2_get_x, newin "4,24")
+  _WRAP_METHOD(float get_y() const, graphene_vec2_get_y, newin "4,24")
+
+  /// Provides access to the underlying C GObject.
+  graphene_vec2_t*       gobj()       { return &gobject_; }
+  /// Provides access to the underlying C GObject.
+  const graphene_vec2_t* gobj() const { return &gobject_; }
+
+protected:
+  graphene_vec2_t gobject_;
+};
+} // namespace Graphene
+} // namespace Gdk

@@ -62,6 +62,7 @@ gdkmm_any_hg_ccg_basenames = [
   'graphene_point',
   'graphene_rect',
   'graphene_size',
+  'graphene_vec2',
   'memorytexture',
   'memorytexturebuilder',
   'monitor',

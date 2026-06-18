@@ -47,6 +47,7 @@ gdkmm_files_any_hg =		\
 	graphene_point.hg \
 	graphene_rect.hg \
 	graphene_size.hg \
+	graphene_vec2.hg \
 	memorytexture.hg \
 	memorytexturebuilder.hg \
 	monitor.hg \

@@ -62,6 +62,29 @@ public:
   _MEMBER_SET(height, height, float, float)
 
   _WRAP_METHOD(bool equal(const Size& b) const, graphene_size_equal, newin "4,12")
+
+  /** Scales the components of a this size using the given @a factor.
+   *
+   * @newin{4,24}
+   *
+   * @param factor The scaling factor.
+   * @return The scaled size.
+   */
+  Size scale(float factor) const;
+  _IGNORE(graphene_size_scale)
+
+  /** Linearly interpolates this size and size @a b using the given
+   * interpolation @a factor.
+   *
+   * @newin{4,24}
+   *
+   * @param b A %Gdk::Graphene::Size.
+   * @param factor The linear interpolation factor.
+   * @return The interpolated size.
+   */
+  Size interpolate(const Size& b, double factor) const;
+  _IGNORE(graphene_size_interpolate)
+
 };
 } // namespace Graphene
 } // namespace Gdk

@@ -17,6 +17,8 @@
 _CONFIGINCLUDE(gdkmmconfig.h)
 _DEFS(gdkmm,gdk)
 
+#include <array>
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 extern "C"
 {
@@ -29,6 +31,8 @@ namespace Gdk
 {
 namespace Graphene
 {
+class GDKMM_API Vec2;
+
 //TODO: When we can break ABI, _CLASS_OPAQUE_COPYABLE -> _CLASS_GENERIC.
 // graphene_point_t gobject_; //Not a pointer.
 // https://gitlab.gnome.org/GNOME/gtkmm/-/issues/155
@@ -43,9 +47,11 @@ namespace Graphene
 class GDKMM_API Point
 {
   _CLASS_OPAQUE_COPYABLE(Point, graphene_point_t, NONE, gdkmm_graphene_point_copy, graphene_point_free, GDKMM_API)
-  _IGNORE(graphene_point_init, graphene_point_init_from_point, graphene_point_free)
+  _IGNORE(graphene_point_init, graphene_point_init_from_point, graphene_point_init_from_vec2,
+    graphene_point_free)
 public:
   Point(float x, float y);
+  Point(const Vec2& src);
 
   /** Checks if this instance is valid.
    * It is valid if and only if it contains a value.
@@ -63,7 +69,35 @@ public:
   _MEMBER_SET(y, y, float, float)
 
   _WRAP_METHOD(bool equal(const Point& b) const, graphene_point_equal, newin "4,12")
+
+  /** Computes the distance between this point and point @a b.
+   *
+   * @newin{4,24}
+   *
+   * @param b A %Gdk::Graphene::Point.
+   * @return A 3-element array.
+   *         - Element 0: The distance between the two points.
+   *         - Element 1: Distance component on the X axis.
+   *         - Element 2: Distance component on the Y axis.
+   */
+  std::array<float,3> distance(const Point& b) const;
+  _IGNORE(graphene_point_distance)
+
+  _WRAP_METHOD(float distance_squared(const Point& b) const, graphene_point_distance_squared, newin "4,24")
   _WRAP_METHOD(bool near(const Point& b, float epsilon) const, graphene_point_near, newin "4,12")
+
+  /** Linearly interpolates the coordinates of this point and point @a b using the
+   * given @a factor.
+   *
+   * @newin{4,24}
+   *
+   * @param b A %Gdk::Graphene::Point.
+   * @param factor The linear interpolation factor.
+   * @return The interpolated point.
+   */
+  Point interpolate(const Point& b, double factor) const;
+  _IGNORE(graphene_point_interpolate)
+  _IGNORE(graphene_point_to_vec2)dnl// Wrapped in a Vec2 constructor.
 };
 } // namespace Graphene
 } // namespace Gdk

@@ -14,6 +14,7 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <gdkmm/graphene_vec2.h>
 #include <graphene.h>
 
 namespace
@@ -34,9 +35,29 @@ Point::Point(float x, float y)
   gobject_ = graphene_point_init(graphene_point_alloc(), x, y);
 }
 
+Point::Point(const Vec2& src)
+{
+  gobject_ = graphene_point_init_from_vec2(graphene_point_alloc(), src.gobj());
+}
+
 Point::operator bool() const
 {
   return gobj();
+}
+
+std::array<float,3> Point::distance(const Point& b) const
+{
+  float x = 0.0;
+  float y = 0.0;
+  const float dist = graphene_point_distance(gobj(), b.gobj(), &x, &y);
+  return {dist, x, y};
+}
+
+Point Point::interpolate(const Point& b, double factor) const
+{
+  Point result(0.0, 0.0);
+  graphene_point_interpolate(gobj(), b.gobj(), factor, result.gobj());
+  return result;
 }
 
 } //namespace Graphene

@@ -39,5 +39,19 @@ Size::operator bool() const
   return gobj();
 }
 
+Size Size::scale(float factor) const
+{
+  Size result(0.0, 0.0);
+  graphene_size_scale(gobj(), factor, result.gobj());
+  return result;
+}
+
+Size Size::interpolate(const Size& b, double factor) const
+{
+  Size result(0.0, 0.0);
+  graphene_size_interpolate(gobj(), b.gobj(), factor, result.gobj());
+  return result;
+}
+
 } //namespace Graphene
 } //namespace Gdk
