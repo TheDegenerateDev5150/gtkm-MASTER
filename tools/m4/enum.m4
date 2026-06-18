@@ -27,13 +27,13 @@ m4_define(`__ENUM_VALUE_BASE__',`Glib::Value_$3<__NAMESPACE__::__ENUM_CLASS_CPPN
 m4_define(`__ENUM_DECL_PREFIX__', $10)
 
 dnl Do not make operators constexpr unconditionally.
-dnl Do it only in namespace Gdk and Gtk (i.e gtkmm),
+dnl Do it only in namespace Gdk, Gsk and Gtk (i.e gtkmm),
 dnl and if __BOOL_ENUM_CONSTEXPR_OPERATORS__ is defined.
 dnl This file may be used when generating code in modules that depend on gtkmm.
 dnl Operators shall not be constexpr by surprise in such modules.
 m4_define(`__ENUM_CONSTEXPR__',`dnl
 m4_ifdef(`__BOOL_ENUM_CONSTEXPR_OPERATORS__',`constexpr ',`dnl
-m4_ifelse(__NAMESPACE__,`Gdk',`constexpr ',__NAMESPACE__,`Gtk',`constexpr ',`')dnl
+m4_ifelse(__NAMESPACE__,`Gdk',`constexpr ',__NAMESPACE__,`Gsk',`constexpr ',__NAMESPACE__,`Gtk',`constexpr ',`')dnl
 ')dnl
 ')dnl
 
