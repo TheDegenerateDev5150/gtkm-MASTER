@@ -51,7 +51,7 @@ class GDKMM_API Point
     graphene_point_free)
 public:
   Point(float x, float y);
-  Point(const Vec2& src);
+  explicit Point(const Vec2& src);
 
   /** Checks if this instance is valid.
    * It is valid if and only if it contains a value.

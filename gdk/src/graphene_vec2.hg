@@ -38,7 +38,8 @@ class GDKMM_API Vec2
 public:
   Vec2();
   Vec2(float x, float y);
-  Vec2(const Point& src);
+  explicit Vec2(const Point& src);
+  explicit Vec2(const graphene_vec2_t* vec2); // always takes a copy
 
   /** Stores the components of this vector into an array.
    *

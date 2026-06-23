@@ -74,5 +74,56 @@ Point Rect::get_bottom_left() const
   return get_point(gobj(), graphene_rect_get_bottom_left);
 }
 
+std::array<Vec2,4> Rect::get_vertices() const
+{
+  graphene_vec2_t vertices[4];
+  graphene_rect_get_vertices(gobj(), vertices);
+  return {Vec2(&vertices[0]), Vec2(&vertices[1]), Vec2(&vertices[2]), Vec2(&vertices[3])};
+}
+
+Rect Rect::join(const Rect& b) const
+{
+  graphene_rect_t* c_union = graphene_rect_alloc();
+  graphene_rect_union(gobj(), b.gobj(), c_union);
+  return Rect(c_union, false);
+}
+
+std::optional<Rect> Rect::intersection(const Rect& b) const
+{
+  graphene_rect_t* c_intersection = graphene_rect_alloc();
+  const bool intersect = graphene_rect_intersection(gobj(), b.gobj(), c_intersection);
+  if (!intersect)
+    return {};
+  return Rect(c_intersection, false);
+}
+
+Rect Rect::round_extents() const
+{
+  graphene_rect_t* c_extents = graphene_rect_alloc();
+  graphene_rect_round_extents(gobj(), c_extents);
+  return Rect(c_extents, false);
+}
+
+Rect Rect::interpolate(const Rect& b, double factor) const
+{
+  graphene_rect_t* c_interpolation = graphene_rect_alloc();
+  graphene_rect_interpolate(gobj(), b.gobj(), factor, c_interpolation);
+  return Rect(c_interpolation, false);
+}
+
+Rect Rect::expand(const Point& p) const
+{
+  graphene_rect_t* c_expansion = graphene_rect_alloc();
+  graphene_rect_expand(gobj(), p.gobj(), c_expansion);
+  return Rect(c_expansion, false);
+}
+
+Rect Rect::scale(float s_h, float s_v) const
+{
+  graphene_rect_t* c_scaled = graphene_rect_alloc();
+  graphene_rect_scale(gobj(), s_h, s_v, c_scaled);
+  return Rect(c_scaled, false);
+}
+
 } //namespace Graphene
 } //namespace Gdk

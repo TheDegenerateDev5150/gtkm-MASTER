@@ -24,8 +24,7 @@ namespace Graphene
 Vec2::Vec2()
 :
   gobject_(*graphene_vec2_zero())
-{
-}
+{}
 
 Vec2::Vec2(float x, float y)
 {
@@ -36,6 +35,11 @@ Vec2::Vec2(const Point& src)
 {
   graphene_point_to_vec2(src.gobj(), gobj());
 }
+
+Vec2::Vec2(const graphene_vec2_t* vec2)
+:
+  gobject_(vec2 ? *vec2 : *graphene_vec2_zero())
+{}
 
 std::array<float,2> Vec2::to_float() const
 {

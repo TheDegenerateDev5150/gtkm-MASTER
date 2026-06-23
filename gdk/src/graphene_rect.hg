@@ -16,6 +16,9 @@
  
 #include <gdkmm/graphene_point.h>
 #include <gdkmm/graphene_size.h>
+#include <gdkmm/graphene_vec2.h>
+#include <array>
+#include <optional>
 
 _CONFIGINCLUDE(gdkmmconfig.h)
 _DEFS(gdkmm,gdk)
@@ -109,15 +112,117 @@ public:
   Point get_bottom_left() const;
   _IGNORE(graphene_rect_get_bottom_left)
 
+  /** Computes the four vertices of this %Rect.
+   *
+   * @newin{4,24}
+   *
+   * @return Array of the 4 vertices.
+   */
+  std::array<Vec2,4> get_vertices() const;
+  _IGNORE(graphene_rect_get_vertices)
+
   _WRAP_METHOD(bool equal(const Rect& b) const, graphene_rect_equal, newin "4,12")
   _WRAP_METHOD(void normalize(), graphene_rect_normalize, newin "4,12")
+  _IGNORE(graphene_rect_normalize_r)
   _WRAP_METHOD(float get_x() const, graphene_rect_get_x, newin "4,12")
   _WRAP_METHOD(float get_y() const, graphene_rect_get_y, newin "4,12")
   _WRAP_METHOD(float get_width() const, graphene_rect_get_width, newin "4,12")
   _WRAP_METHOD(float get_height() const, graphene_rect_get_height, newin "4,12")
   _WRAP_METHOD(float get_area() const, graphene_rect_get_area, newin "4,12")
+
+  // 'union' is a C and C++ keyword. Can't be a method name. (see also Gdk::Rectangle)
+  /** Computes the union of the two rectangles.
+   *
+   * @newin{4,24}
+   *
+   * @param b A %Gdk::Graphene::Rect.
+   * @return The union of this rectangle and @a b.
+   */
+  Rect join(const Rect& b) const;
+  _IGNORE(graphene_rect_union)
+
+  /** Computes the intersection of the two given rectangles.
+   *
+   * If the two rectangles do not intersect, no value is returned.
+   *
+   * @newin{4,24}
+   *
+   * @param b A %Gdk::Graphene::Rect.
+   * @return The intersection of this rectangle and @a b, if any.
+   */
+  std::optional<Rect> intersection(const Rect& b) const;
+  _IGNORE(graphene_rect_intersection)
+
   _WRAP_METHOD(bool contains_point(const Point& p) const, graphene_rect_contains_point, newin "4,12")
   _WRAP_METHOD(bool contains_rect(const Rect& b) const, graphene_rect_contains_rect, newin "4,12")
+  _WRAP_METHOD(void offset(float d_x, float d_y), graphene_rect_offset, newin "4,24")
+  _IGNORE(graphene_rect_offset_r)
+  _WRAP_METHOD(void inset(float d_x, float d_y), graphene_rect_inset, newin "4,24")
+  _IGNORE(graphene_rect_inset_r)
+  _IGNORE(graphene_rect_round_to_pixel, graphene_rect_round)dnl// deprecated
+
+  /** Rounds the origin of this rectangle to its nearest
+   * integer value and recomputes the size so that the
+   * rectangle is large enough to contain all the corners
+   * of the original rectangle.
+   *
+   * This function is the equivalent of calling `floor` on
+   * the coordinates of the origin, and recomputing the size
+   * calling `ceil` on the bottom-right coordinates.
+   *
+   * If you want to be sure that the rounded rectangle
+   * completely covers the area that was covered by the
+   * original rectangle — i.e. you want to cover the area
+   * including all its corners — this function will make sure
+   * that the size is recomputed taking into account the ceiling
+   * of the coordinates of the bottom-right corner.
+   * If the difference between the original coordinates and the
+   * coordinates of the rounded rectangle is greater than the
+   * difference between the original size and the rounded
+   * size, then the move of the origin would not be compensated
+   * by a move in the anti-origin, leaving the corners of the
+   * original rectangle outside the rounded one.
+   *
+   * @newin{4,24}
+   *
+   * @return The rectangle with rounded extents.
+   */
+  Rect round_extents() const;
+  _IGNORE(graphene_rect_round_extents)
+
+  /** Linearly interpolates the origin and size of this rectangle and rectangle @a b.
+   *
+   * @newin{4,24}
+   *
+   * @param b A %Gdk::Graphene::Rect.
+   * @param factor The linear interpolation factor.
+   * @return The interpolated rectangle.
+   */
+  Rect interpolate(const Rect& b, double factor) const;
+  _IGNORE(graphene_rect_interpolate)
+
+  /** Expands this rectangle to contain the given point.
+   *
+   * @newin{4,24}
+   *
+   * @param p A Gdk::Graphene::Point.
+   * @return The expanded rectangle.
+   */
+  Rect expand(const Point& p) const;
+  _IGNORE(graphene_rect_expand)
+
+  /** Scales the size and origin of this rectangle horizontally by @a s_h,
+   * and vertically by @a s_v.
+   *
+   * @newin{4,24}
+   *
+   * @param s_h Horizontal scale factor.
+   * @param s_v Vertical scale factor.
+   * @return The scaled and normalized rectangle.
+   */
+  Rect scale(float s_h, float s_v) const;
+  _IGNORE(graphene_rect_scale)
+
 };
 } // namespace Graphene
 } // namespace Gdk
