@@ -53,7 +53,8 @@ public:
   //_WRAP_METHOD(Glib::RefPtr<Gtk::IMContext> get_im_context(), gtk_event_controller_key_get_im_context, refreturn)
   //_WRAP_METHOD(Glib::RefPtr<const Gtk::IMContext> get_im_context(), gtk_event_controller_key_get_im_context, refreturn, constversion)
 
-  _WRAP_METHOD(bool forward(Widget& widget), gtk_event_controller_key_forward)
+  _WRAP_METHOD(bool forward(Widget& widget), gtk_event_controller_key_forward,
+    deprecated "4.24: Use Gtk::Editable::set_input_interceptor() instead.")
   _WRAP_METHOD(guint get_group() const, gtk_event_controller_key_get_group)
 
   // no_default_handler because GtkEventControllerKeyClass is private.

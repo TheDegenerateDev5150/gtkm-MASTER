@@ -214,8 +214,8 @@ public:
 #m4begin
   _WRAP_EQUAL(gdk_rgba_equal,,GDKMM_API)
 #m4end
+  _IGNORE(gdk_rgba_equal)
 };
-
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 /* These traits are for arrays of GdkRGBA structs -- not pointer arrays.
