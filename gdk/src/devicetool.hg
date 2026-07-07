@@ -31,6 +31,8 @@ namespace Gdk
 class GDKMM_API DeviceTool : public Glib::Object
 {
   _CLASS_GOBJECT(DeviceTool, GdkDeviceTool, GDK_DEVICE_TOOL, Glib::Object, GObject, , , GDKMM_API)
+  _DO_NOT_DERIVE_GTYPE dnl// GdkDeviceTool is an internal type
+  _ABI_AS_WITH_DERIVED_GTYPE dnl// Remove when we can break ABI
 
 public:
   _WRAP_ENUM(Type, GdkDeviceToolType, decl_prefix GDKMM_API)

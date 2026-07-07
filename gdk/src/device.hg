@@ -39,6 +39,9 @@ class GDKMM_API Surface;
 class GDKMM_API Device : public Glib::Object
 {
   _CLASS_GOBJECT(Device,GdkDevice,GDK_DEVICE,Glib::Object,GObject, , , GDKMM_API)
+  _DO_NOT_DERIVE_GTYPE dnl// GdkDevice is an internal type
+  _ABI_AS_WITH_DERIVED_GTYPE dnl// Remove when we can break ABI
+
   _CUSTOM_WRAP_NEW
 
 protected:

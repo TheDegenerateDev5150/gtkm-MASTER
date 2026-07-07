@@ -56,6 +56,8 @@ namespace Gdk
 class GDKMM_API DevicePad : public Glib::Interface
 {
   _CLASS_INTERFACE(DevicePad, GdkDevicePad, GDK_DEVICE_PAD, GdkDevicePadInterface, , , GDKMM_API)
+  _DO_NOT_DERIVE_GTYPE dnl// GdkDevicePad is an internal type
+  _ABI_AS_WITH_DERIVED_GTYPE dnl// Remove when we can break ABI
 
 public:
   _WRAP_ENUM(Feature, GdkDevicePadFeature, decl_prefix GDKMM_API)

@@ -37,6 +37,8 @@ class GDKMM_API Surface;
 class GDKMM_API Seat : public Glib::Object
 {
   _CLASS_GOBJECT(Seat, GdkSeat, GDK_SEAT, Glib::Object, GObject, , , GDKMM_API)
+  _DO_NOT_DERIVE_GTYPE dnl// GdkSeat is an internal type
+  _ABI_AS_WITH_DERIVED_GTYPE dnl// Remove when we can break ABI
 
 protected:
   _CTOR_DEFAULT()

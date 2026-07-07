@@ -30,6 +30,8 @@ namespace Gdk
 class GDKMM_API MemoryTexture : public Gdk::Texture
 {
   _CLASS_GOBJECT(MemoryTexture, GdkMemoryTexture, GDK_MEMORY_TEXTURE, Gdk::Texture, GdkTexture, , , GDKMM_API)
+  _DO_NOT_DERIVE_GTYPE dnl// GdkMemoryTexture is an internal type
+  _ABI_AS_WITH_DERIVED_GTYPE dnl// Remove when we can break ABI
 
 protected:
   _CTOR_DEFAULT()

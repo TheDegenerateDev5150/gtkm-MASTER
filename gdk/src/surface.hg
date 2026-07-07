@@ -56,7 +56,10 @@ class GDKMM_API Monitor;
 class GDKMM_API Surface : public Glib::Object
 {
   _CLASS_GOBJECT(Surface, GdkSurface, GDK_SURFACE, Glib::Object, GObject, , , GDKMM_API)
+  _DO_NOT_DERIVE_GTYPE dnl// GdkSurface is an internal type
+  _ABI_AS_WITH_DERIVED_GTYPE dnl// Remove when we can break ABI
   _STRUCT_NOT_HIDDEN
+
   _CUSTOM_WRAP_NEW
   _IGNORE(gdk_surface_destroy, gdk_surface_is_destroyed)
 

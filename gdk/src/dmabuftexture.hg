@@ -36,6 +36,8 @@ _WRAP_GERROR(DmabufError, GdkDmabufError, GDK_DMABUF_ERROR, decl_prefix GDKMM_AP
 class GDKMM_API DmabufTexture : public Gdk::Texture
 {
   _CLASS_GOBJECT(DmabufTexture, GdkDmabufTexture, GDK_DMABUF_TEXTURE, Gdk::Texture, GdkTexture, , , GDKMM_API)
+  _DO_NOT_DERIVE_GTYPE dnl// GdkDmabufTexture is an internal type
+  _ABI_AS_WITH_DERIVED_GTYPE dnl// Remove when we can break ABI
 
 protected:
   _CTOR_DEFAULT()

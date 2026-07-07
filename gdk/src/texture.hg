@@ -59,6 +59,8 @@ class GDKMM_API Texture : public Glib::Object, public Paintable
 {
   _CLASS_GOBJECT(Texture, GdkTexture, GDK_TEXTURE, Glib::Object, GObject, , , GDKMM_API)
   _IMPLEMENTS_INTERFACE(Paintable)
+  _DO_NOT_DERIVE_GTYPE dnl// GdkTexture is an internal type
+  _ABI_AS_WITH_DERIVED_GTYPE dnl// Remove when we can break ABI
   _IGNORE(gdk_texture_downloader_new) dnl// gmmproc thinks this is a Texture method
 
 protected:

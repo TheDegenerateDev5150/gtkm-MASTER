@@ -30,6 +30,8 @@ class GDKMM_API GLContext;
 class GDKMM_API GLTexture : public Gdk::Texture
 {
   _CLASS_GOBJECT(GLTexture, GdkGLTexture, GDK_GL_TEXTURE, Gdk::Texture, GdkTexture, , , GDKMM_API)
+  _DO_NOT_DERIVE_GTYPE dnl// GdkGLTexture is an internal type
+  _ABI_AS_WITH_DERIVED_GTYPE dnl// Remove when we can break ABI
 
 protected:
   _CTOR_DEFAULT()

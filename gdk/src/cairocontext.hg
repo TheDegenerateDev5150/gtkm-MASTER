@@ -36,6 +36,8 @@ namespace Gdk
 class GDKMM_API CairoContext : public Gdk::DrawContext
 {
   _CLASS_GOBJECT(CairoContext, GdkCairoContext, GDK_CAIRO_CONTEXT, Gdk::DrawContext, GdkDrawContext, , , GDKMM_API)
+  _DO_NOT_DERIVE_GTYPE dnl// GdkCairoContext is an internal type
+  _ABI_AS_WITH_DERIVED_GTYPE dnl// Remove when we can break ABI
 
 protected:
   _CTOR_DEFAULT()

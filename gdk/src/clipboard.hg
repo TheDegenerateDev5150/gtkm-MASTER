@@ -56,6 +56,8 @@ namespace Gdk
 class GDKMM_API Clipboard : public Glib::Object
 {
   _CLASS_GOBJECT(Clipboard, GdkClipboard, GDK_CLIPBOARD, Glib::Object, GObject, , , GDKMM_API)
+  _DO_NOT_DERIVE_GTYPE dnl// GdkClipboard is an internal type
+  _ABI_AS_WITH_DERIVED_GTYPE dnl// Remove when we can break ABI
 
 public:
   _WRAP_METHOD(Glib::RefPtr<Display> get_display(), gdk_clipboard_get_display, refreturn)

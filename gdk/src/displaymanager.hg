@@ -32,6 +32,8 @@ namespace Gdk
 class GDKMM_API DisplayManager : public Glib::Object
 {
   _CLASS_GOBJECT(DisplayManager,GdkDisplayManager,GDK_DISPLAY_MANAGER,Glib::Object,GObject, , , GDKMM_API)
+  _DO_NOT_DERIVE_GTYPE dnl// GdkDisplayManager is an internal type
+  _ABI_AS_WITH_DERIVED_GTYPE dnl// Remove when we can break ABI
 protected:
 
 public:

@@ -79,6 +79,8 @@ _WRAP_GERROR(GLError, GdkGLError, GDK_GL_ERROR, newin "3,18", decl_prefix GDKMM_
 class GDKMM_API GLContext : public DrawContext
 {
   _CLASS_GOBJECT(GLContext, GdkGLContext, GDK_GL_CONTEXT, Gdk::DrawContext, GdkDrawContext, , , GDKMM_API)
+  _DO_NOT_DERIVE_GTYPE dnl// GdkGLContext is an internal type
+  _ABI_AS_WITH_DERIVED_GTYPE dnl// Remove when we can break ABI
 
 protected:
   _CTOR_DEFAULT
