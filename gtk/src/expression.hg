@@ -167,7 +167,7 @@ class PropertyExpression final : public Expression<T>
 public:
   /** Get the GType for this class, for use with the underlying GObject type system.
    */
-  static GType get_type() G_GNUC_CONST;
+  static GType get_type();
 
   /** Creates an expression that looks up a property via the
    * `this` argument.
@@ -229,7 +229,7 @@ class ConstantExpression final : public Expression<T>
 public:
   /** Get the GType for this class, for use with the underlying GObject type system.
    */
-  static GType get_type() G_GNUC_CONST;
+  static GType get_type();
 
   /** Creates a Gtk::Expression that evaluates to the object given by
    * the arguments.
@@ -254,7 +254,7 @@ class ObjectExpression final : public Expression<T>
 public:
   /** Get the GType for this class, for use with the underlying GObject type system.
    */
-  static GType get_type() G_GNUC_CONST;
+  static GType get_type();
 
   /** Creates an expression evaluating to the given @a object with a weak reference.
    * Once the @a object is disposed, it will fail to evaluate.
@@ -274,7 +274,7 @@ class ClosureExpression final : public Expression<T>
 public:
   /** Get the GType for this class, for use with the underlying GObject type system.
    */
-  static GType get_type() G_GNUC_CONST;
+  static GType get_type();
 
   /** Creates a Gtk::Expression that calls @a slot when it is evaluated.
    * @a slot is called with the @a this object and the results of evaluating
@@ -324,7 +324,7 @@ public:
  *
  * @newin{4,22}
    */
-  static GType get_type() G_GNUC_CONST;
+  static GType get_type();
 
 /** Creates an expression with a vector of expressions.
  *
