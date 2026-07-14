@@ -559,13 +559,18 @@ pc_uninstalled_variables = [
   'docdir=${prefix}/docs',
 ] + pc_common_variables
 
-pkg_config.generate(gtkmm_library,
+# Specify the pkg-config interface explicitly instead of deriving it
+# from gtkmm_library, to avoid adding non-public dependencies to
+# gtkmm-4.0.pc.
+pkg_config.generate(
   filebase: gtkmm_pcname,
   variables: pc_variables,
   uninstalled_variables: pc_uninstalled_variables,
   name: meson.project_name(),
   description: 'C++ binding for the GTK toolkit',
   url: 'https://gtkmm.gnome.org/',
+  version: meson.project_version(),
+  libraries: ['-L${libdir}', '-l' + gtkmm_libname],
   requires: gtkmm_pc_requires,
   subdirs: [gtkmm_pcname],
   extra_cflags: ['-I${libdir}/' + gtkmm_pcname + '/include'],
