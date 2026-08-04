@@ -91,27 +91,6 @@ namespace Gtk
  * default window icon. Use Gtk::Window::set_default_icon_name() or
  * Gtk::Window::property_icon_name() to override that behavior.
  *
- * ## State saving
- *
- * %Gtk::Application registers with a session manager if possible and
- * offers various functionality related to the session life-cycle,
- * such as state saving.
- *
- * State-saving functionality can be enabled by setting
- * property_support_save() to true.
- *
- * In order to save and restore per-window state, applications must
- * connect to signal_restore_window() and
- * handle Gtk::ApplicationWindow::signal_save_state(). There
- * are also signal_restore_state() and
- * signal_save_state() signals, which can be used
- * for global state that is not connected to any window.
- *
- * %Gtk::Application automatically saves state before app shutdown, and by
- * default periodically auto-saves app state (as configured by
- * property_autosave_interval()). Applications can
- * also call save() themselves at opportune times.
- *
  * ## Inhibiting
  *
  * An application can block various ways to end the session with
@@ -345,28 +324,20 @@ public:
 
   _WRAP_METHOD(Glib::RefPtr<Gio::Menu> get_menu_by_id(const Glib::ustring& id), gtk_application_get_menu_by_id, refreturn)
   _WRAP_METHOD(Glib::RefPtr<const Gio::Menu> get_menu_by_id(const Glib::ustring& id) const, gtk_application_get_menu_by_id, refreturn, constversion)
-  _WRAP_METHOD(void save(), gtk_application_save)
-  _WRAP_METHOD(void forget(), gtk_application_forget)
 
   _WRAP_PROPERTY("menubar", Glib::RefPtr<Gio::MenuModel>)
   _WRAP_PROPERTY("register-session", bool,
     deprecated "4.20: This property is ignored. GTK always registers with the session manager.")
   _WRAP_PROPERTY("screensaver-active", bool, newin "3,94")
   _WRAP_PROPERTY("active-window", Window*)
-  _WRAP_PROPERTY("support-save", bool)
-  _WRAP_PROPERTY("autosave-interval", unsigned int)
 
   _WRAP_SIGNAL(void window_added(Window* window), "window-added")
   _WRAP_SIGNAL(void window_removed(Window* window), "window-removed")
   // no_default_handler because the wrapped C signal has no default handler.
   _WRAP_SIGNAL(void query_end(), "query-end", no_default_handler)
 
-#m4 _CONVERSION(`GVariant*',`const Glib::VariantBase&',`Glib::wrap($3, true)')
-#m4 _CONVERSION(`GVariantDict*',`const Glib::RefPtr<Glib::VariantDict>&',`Glib::wrap($3, true)')
-  // TODO: Remove the following 3 no_default_handler when we can break ABI.
-  _WRAP_SIGNAL(void restore_window(RestoreReason reason, const Glib::VariantBase& state), "restore-window", no_default_handler)
-  _WRAP_SIGNAL(bool save_state(const Glib::RefPtr<Glib::VariantDict>& dict), "save-state", no_default_handler)
-  _WRAP_SIGNAL(bool restore_state(RestoreReason reason, const Glib::VariantBase& state), "restore-state", no_default_handler)
+  // If GtkApplication::restore-window, ::save-state, ::restoee-state
+  // are added again, see how they were wrapped in gtkmm 4.21.2 and 4.23.0.
 
 private:
   /** This is just a way to call Glib::init() before calling a Glib::Object ctor,
