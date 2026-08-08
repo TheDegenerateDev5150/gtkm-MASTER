@@ -187,6 +187,7 @@
     '("isolation-node" "GSK_ISOLATION_NODE" "35")
     '("displacement-node" "GSK_DISPLACEMENT_NODE" "36")
     '("arithmetic-node" "GSK_ARITHMETIC_NODE" "37")
+    '("turbulence-node" "GSK_TURBULENCE_NODE" "38")
   )
 )
 

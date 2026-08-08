@@ -141,6 +141,20 @@
   )
 )
 
+(define-enum-extended FrameResult
+  (in-module "Gdk")
+  (c-name "GdkFrameResult")
+  (values
+    '("preparing" "GDK_FRAME_PREPARING" "0")
+    '("skipped" "GDK_FRAME_SKIPPED" "1")
+    '("empty" "GDK_FRAME_EMPTY" "2")
+    '("submitted" "GDK_FRAME_SUBMITTED" "3")
+    '("outstanding" "GDK_FRAME_OUTSTANDING" "4")
+    '("discarded" "GDK_FRAME_DISCARDED" "5")
+    '("presented" "GDK_FRAME_PRESENTED" "6")
+  )
+)
+
 (define-enum-extended FullscreenMode
   (in-module "Gdk")
   (c-name "GdkFullscreenMode")

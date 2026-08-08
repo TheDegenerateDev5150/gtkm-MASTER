@@ -129,6 +129,15 @@
   (default-value "TRUE")
 )
 
+(define-property input-interceptor
+  (of-object "GtkEditable")
+  (prop-type "GParamObject")
+  (docs "")
+  (readable #t)
+  (writable #t)
+  (construct-only #f)
+)
+
 (define-property max-width-chars
   (of-object "GtkEditable")
   (prop-type "GParamInt")
@@ -192,6 +201,12 @@
     '("gint" "start_pos")
     '("gint" "end_pos")
   )
+)
+
+(define-signal input-intercepted
+  (of-object "GtkEditable")
+  (return-type "void")
+  (flags "Run Last")
 )
 
 (define-signal insert-text
@@ -1037,16 +1052,6 @@
   (construct-only #f)
 )
 
-(define-property autosave-interval
-  (of-object "GtkApplication")
-  (prop-type "GParamUInt")
-  (docs "")
-  (readable #t)
-  (writable #t)
-  (construct-only #f)
-  (default-value "15")
-)
-
 (define-property menubar
   (of-object "GtkApplication")
   (prop-type "GParamObject")
@@ -1077,49 +1082,10 @@
   (default-value "FALSE")
 )
 
-(define-property support-save
-  (of-object "GtkApplication")
-  (prop-type "GParamBoolean")
-  (docs "")
-  (readable #t)
-  (writable #t)
-  (construct-only #f)
-  (default-value "FALSE")
-)
-
 (define-signal query-end
   (of-object "GtkApplication")
   (return-type "void")
   (flags "Run First")
-)
-
-(define-signal restore-state
-  (of-object "GtkApplication")
-  (return-type "gboolean")
-  (flags "Run Last")
-  (parameters
-    '("GtkRestoreReason" "reason")
-    '("GVariant*" "state")
-  )
-)
-
-(define-signal restore-window
-  (of-object "GtkApplication")
-  (return-type "void")
-  (flags "Run First")
-  (parameters
-    '("GtkRestoreReason" "reason")
-    '("GVariant*" "state")
-  )
-)
-
-(define-signal save-state
-  (of-object "GtkApplication")
-  (return-type "gboolean")
-  (flags "Run Last")
-  (parameters
-    '("GVariantDict*" "dict")
-  )
 )
 
 (define-signal window-added
@@ -1148,15 +1114,6 @@
   (writable #t)
   (construct-only #f)
   (default-value "FALSE")
-)
-
-(define-signal save-state
-  (of-object "GtkApplicationWindow")
-  (return-type "gboolean")
-  (flags "Run Last")
-  (parameters
-    '("GVariantDict*" "dict")
-  )
 )
 
 (define-property child
@@ -11023,6 +10980,16 @@
   (default-value "GTK_REDUCED_MOTION_NO_PREFERENCE")
 )
 
+(define-property gtk-keyboard-focus-visible-timeout
+  (of-object "GtkSettings")
+  (prop-type "GParamInt")
+  (docs "")
+  (readable #t)
+  (writable #t)
+  (construct-only #f)
+  (default-value "-1")
+)
+
 (define-property gtk-keynav-use-caret
   (of-object "GtkSettings")
   (prop-type "GParamBoolean")
@@ -12424,6 +12391,15 @@
   (docs "")
   (readable #t)
   (writable #t)
+  (construct-only #f)
+)
+
+(define-property svg
+  (of-object "GtkSvgWidget")
+  (prop-type "GParamObject")
+  (docs "")
+  (readable #t)
+  (writable #f)
   (construct-only #f)
 )
 

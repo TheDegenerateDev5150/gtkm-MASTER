@@ -1,16 +1,40 @@
 
 ;; Objects for namespace Gdk
 
+(define-object AppLaunchContextClass
+  (in-module "Gdk")
+  (c-name "GdkAppLaunchContextClass")
+  (gtype-id "GDK_TYPE_APP_LAUNCH_CONTEXT_CLASS")
+)
+
+(define-object CairoContextClass
+  (in-module "Gdk")
+  (c-name "GdkCairoContextClass")
+  (gtype-id "GDK_TYPE_CAIRO_CONTEXT_CLASS")
+)
+
 (define-object CicpParamsClass
   (in-module "Gdk")
   (c-name "GdkCicpParamsClass")
   (gtype-id "GDK_TYPE_CICP_PARAMS_CLASS")
 )
 
+(define-object ClipboardClass
+  (in-module "Gdk")
+  (c-name "GdkClipboardClass")
+  (gtype-id "GDK_TYPE_CLIPBOARD_CLASS")
+)
+
 (define-object ColorState
   (in-module "Gdk")
   (c-name "GdkColorState")
   (gtype-id "GDK_TYPE_COLOR_STATE")
+)
+
+(define-object ContentDeserializerClass
+  (in-module "Gdk")
+  (c-name "GdkContentDeserializerClass")
+  (gtype-id "GDK_TYPE_CONTENT_DESERIALIZER_CLASS")
 )
 
 (define-object ContentFormats
@@ -31,10 +55,52 @@
   (gtype-id "GDK_TYPE_CONTENT_PROVIDER_CLASS")
 )
 
+(define-object ContentSerializerClass
+  (in-module "Gdk")
+  (c-name "GdkContentSerializerClass")
+  (gtype-id "GDK_TYPE_CONTENT_SERIALIZER_CLASS")
+)
+
+(define-object CursorClass
+  (in-module "Gdk")
+  (c-name "GdkCursorClass")
+  (gtype-id "GDK_TYPE_CURSOR_CLASS")
+)
+
+(define-object DeviceClass
+  (in-module "Gdk")
+  (c-name "GdkDeviceClass")
+  (gtype-id "GDK_TYPE_DEVICE_CLASS")
+)
+
+(define-object DevicePadClass
+  (in-module "Gdk")
+  (c-name "GdkDevicePadClass")
+  (gtype-id "GDK_TYPE_DEVICE_PAD_CLASS")
+)
+
 (define-object DevicePadInterface
   (in-module "Gdk")
   (c-name "GdkDevicePadInterface")
   (gtype-id "GDK_TYPE_DEVICE_PAD_INTERFACE")
+)
+
+(define-object DeviceToolClass
+  (in-module "Gdk")
+  (c-name "GdkDeviceToolClass")
+  (gtype-id "GDK_TYPE_DEVICE_TOOL_CLASS")
+)
+
+(define-object DisplayClass
+  (in-module "Gdk")
+  (c-name "GdkDisplayClass")
+  (gtype-id "GDK_TYPE_DISPLAY_CLASS")
+)
+
+(define-object DisplayManagerClass
+  (in-module "Gdk")
+  (c-name "GdkDisplayManagerClass")
+  (gtype-id "GDK_TYPE_DISPLAY_MANAGER_CLASS")
 )
 
 (define-object DmabufFormats
@@ -55,6 +121,12 @@
   (gtype-id "GDK_TYPE_DMABUF_TEXTURE_CLASS")
 )
 
+(define-object DragClass
+  (in-module "Gdk")
+  (c-name "GdkDragClass")
+  (gtype-id "GDK_TYPE_DRAG_CLASS")
+)
+
 (define-object DragSurfaceInterface
   (in-module "Gdk")
   (c-name "GdkDragSurfaceInterface")
@@ -65,6 +137,18 @@
   (in-module "Gdk")
   (c-name "GdkDragSurfaceSize")
   (gtype-id "GDK_TYPE_DRAG_SURFACE_SIZE")
+)
+
+(define-object DrawContextClass
+  (in-module "Gdk")
+  (c-name "GdkDrawContextClass")
+  (gtype-id "GDK_TYPE_DRAW_CONTEXT_CLASS")
+)
+
+(define-object DropClass
+  (in-module "Gdk")
+  (c-name "GdkDropClass")
+  (gtype-id "GDK_TYPE_DROP_CLASS")
 )
 
 (define-object EventSequence
@@ -85,16 +169,16 @@
   (gtype-id "GDK_TYPE_FRAME_CLOCK_CLASS")
 )
 
-(define-object FrameClockPrivate
-  (in-module "Gdk")
-  (c-name "GdkFrameClockPrivate")
-  (gtype-id "GDK_TYPE_FRAME_CLOCK_PRIVATE")
-)
-
 (define-object FrameTimings
   (in-module "Gdk")
   (c-name "GdkFrameTimings")
   (gtype-id "GDK_TYPE_FRAME_TIMINGS")
+)
+
+(define-object GLContextClass
+  (in-module "Gdk")
+  (c-name "GdkGLContextClass")
+  (gtype-id "GDK_TYPE_GL_CONTEXT_CLASS")
 )
 
 (define-object GLTextureBuilderClass
@@ -163,6 +247,12 @@
   (gtype-id "GDK_TYPE_RECTANGLE")
 )
 
+(define-object SeatClass
+  (in-module "Gdk")
+  (c-name "GdkSeatClass")
+  (gtype-id "GDK_TYPE_SEAT_CLASS")
+)
+
 (define-object SnapshotClass
   (in-module "Gdk")
   (c-name "GdkSnapshotClass")
@@ -209,6 +299,12 @@
   (in-module "Gdk")
   (c-name "GdkToplevelSize")
   (gtype-id "GDK_TYPE_TOPLEVEL_SIZE")
+)
+
+(define-object VulkanContextClass
+  (in-module "Gdk")
+  (c-name "GdkVulkanContextClass")
+  (gtype-id "GDK_TYPE_VULKAN_CONTEXT_CLASS")
 )
 
 (define-object DevicePad
@@ -745,6 +841,15 @@
   (return-type "guint")
   (parameters
     '("const-char*" "keyval_name")
+  )
+)
+
+(define-function gdk_keyval_get_aliases
+  (c-name "gdk_keyval_get_aliases")
+  (return-type "const-guint*")
+  (parameters
+    '("guint" "keyval")
+    '("guint*" "n_aliases")
   )
 )
 
@@ -1299,6 +1404,12 @@
   (of-object "GdkFrameTimings")
   (c-name "gdk_frame_timings_get_refresh_interval")
   (return-type "gint64")
+)
+
+(define-method get_result
+  (of-object "GdkFrameTimings")
+  (c-name "gdk_frame_timings_get_result")
+  (return-type "GdkFrameResult")
 )
 
 (define-method ref

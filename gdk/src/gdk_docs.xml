@@ -1585,6 +1585,89 @@ The elements of the enumeration correspond to the signals of `GdkFrameClock`.
 </parameters>
 </enum>
 
+<enum name="GdkFrameResult">
+<description>
+An enumeration describing the process of rendering a frame.
+Rendering a frame starts with the frame clock cycle and then follows
+the rendered frame (if there was one) through the display server
+until it appears on screen.
+
+It is relevant in particular for [struct@Gdk.FrameTimings] which
+may still be waiting for values to be filled in.
+
+Since: 4.24
+
+</description>
+<parameters>
+<parameter name="GDK_FRAME_PREPARING">
+<parameter_description>The frame is currently being prepared and rendered by GTK.
+This is the initial state.
+
+Since: 4.24
+</parameter_description>
+</parameter>
+<parameter name="GDK_FRAME_SKIPPED">
+<parameter_description>GTK has determined that nothing needs to be rendered because
+there are no visual changes. No rendering will be submitted to
+the display server and because of that no information will
+be forthcoming from the display server.
+
+The frame is complete.
+
+Since: 4.24
+</parameter_description>
+</parameter>
+<parameter name="GDK_FRAME_EMPTY">
+<parameter_description>GTK has determined that nothing needs to be rendered because
+there are no visual changes. This information has been submitted 
+to the display server. The presentation time has been updated to
+reflect when this frame would have been displayed.
+
+The frame is complete.
+
+Since: 4.24
+</parameter_description>
+</parameter>
+<parameter name="GDK_FRAME_SUBMITTED">
+<parameter_description>A frame has been drawn and submitted to the display server, but
+the display server will not provide any further feedback about when
+or how the frame is going to be displayed.
+
+The frame is complete.
+
+Since: 4.24
+</parameter_description>
+</parameter>
+<parameter name="GDK_FRAME_OUTSTANDING">
+<parameter_description>The frame has been drawn and submitted to the display server, but the
+display server has not yet replied what is going to happen with the
+rendered image.
+
+Since: 4.24
+</parameter_description>
+</parameter>
+<parameter name="GDK_FRAME_DISCARDED">
+<parameter_description>The frame has been drawn and submitted to the display server, but the
+display server has not displayed it. No presentation time will be available.
+
+The frame is complete.
+
+Since: 4.24
+</parameter_description>
+</parameter>
+<parameter name="GDK_FRAME_PRESENTED">
+<parameter_description>The frame has been drawn and submitted to the display server, and the
+display server has rendered it and displayed the result. The presentation
+time is accurately reflecting when that happened.
+
+The frame is complete.
+
+Since: 4.24
+</parameter_description>
+</parameter>
+</parameters>
+</enum>
+
 <enum name="GdkFullscreenMode">
 <description>
 Indicates which monitor a surface should span over when in fullscreen mode.
@@ -2824,6 +2907,17 @@ Since: 4.24
 
 Bits 31..30 contain the alpha channel, 29..20 blue, 19..10 green
 and 9..0 red.
+
+Since: 4.24
+</parameter_description>
+</parameter>
+<parameter name="GDK_MEMORY_ABGR2101010_PREMULTIPLIED">
+<parameter_description>4 bytes per pixel
+
+Bits 31..30 contain the alpha channel, 29..20 blue, 19..10 green
+and 9..0 red.
+
+The color values are premultiplied with the alpha value.
 
 Since: 4.24
 </parameter_description>
@@ -10992,8 +11086,28 @@ is called the same number of times.
 
 </description>
 <parameters>
-<parameter name="frame_clock">
+<parameter name="self">
 <parameter_description> a `GdkFrameClock`
+</parameter_description>
+</parameter>
+</parameters>
+<return></return>
+</function>
+
+<function name="gdk_frame_clock_discarded">
+<description>
+Marks the given frame as complete by the compositor discarding it.
+
+This function should be called by GDK backends.
+
+</description>
+<parameters>
+<parameter name="self">
+<parameter_description> a frame clock
+</parameter_description>
+</parameter>
+<parameter name="frame_counter">
+<parameter_description> the frame to provide info for
 </parameter_description>
 </parameter>
 </parameters>
@@ -11008,7 +11122,7 @@ See the documentation for [method@Gdk.FrameClock.begin_updating].
 
 </description>
 <parameters>
-<parameter name="frame_clock">
+<parameter name="self">
 <parameter_description> a `GdkFrameClock`
 </parameter_description>
 </parameter>
@@ -11084,7 +11198,7 @@ time.
 
 </description>
 <parameters>
-<parameter name="frame_clock">
+<parameter name="self">
 <parameter_description> a `GdkFrameClock`
 </parameter_description>
 </parameter>
@@ -11182,6 +11296,55 @@ for the specified frame, or %NULL if it is not available
 </return>
 </function>
 
+<function name="gdk_frame_clock_outstanding">
+<description>
+Called whenever there is a buffer submitted to the compositor, usually
+by gdk_draw_context_end_frame() automatically.
+
+Note that gdk_draw_context_empty_frame() does not call this function.
+
+</description>
+<parameters>
+<parameter name="self">
+<parameter_description> The frame clock
+</parameter_description>
+</parameter>
+</parameters>
+<return></return>
+</function>
+
+<function name="gdk_frame_clock_presented">
+<description>
+Marks the given frame as presented by the compositor.
+
+This function should be called by GDK backends only when a concrete
+presentation time is available. Otherwise call gdk_frame_clock_submitted()
+instead.
+
+</description>
+<parameters>
+<parameter name="self">
+<parameter_description> a frame clock
+</parameter_description>
+</parameter>
+<parameter name="frame_counter">
+<parameter_description> the frame to provide info for
+</parameter_description>
+</parameter>
+<parameter name="presentation_time">
+<parameter_description> the presentation time of the image in nanoseconds
+in the monotonic clock's time.
+</parameter_description>
+</parameter>
+<parameter name="refresh">
+<parameter_description> the refresh interval to the next frame in nanoseconds
+or 0 to keep the predicted interval.
+</parameter_description>
+</parameter>
+</parameters>
+<return></return>
+</function>
+
 <function name="gdk_frame_clock_request_phase">
 <description>
 Asks the frame clock to run a particular phase.
@@ -11198,12 +11361,39 @@ smooth animations.
 
 </description>
 <parameters>
-<parameter name="frame_clock">
+<parameter name="self">
 <parameter_description> a `GdkFrameClock`
 </parameter_description>
 </parameter>
 <parameter name="phase">
 <parameter_description> the phase that is requested
+</parameter_description>
+</parameter>
+</parameters>
+<return></return>
+</function>
+
+<function name="gdk_frame_clock_submitted">
+<description>
+Marks the given frame as complete by submission to the compositor.
+
+This function should be called by GDK backends upon frame
+submission when no further information about the compositor's use
+can be provided for this frame.
+
+</description>
+<parameters>
+<parameter name="self">
+<parameter_description> a frame clock
+</parameter_description>
+</parameter>
+<parameter name="frame_counter">
+<parameter_description> the frame to provide info for
+</parameter_description>
+</parameter>
+<parameter name="refresh">
+<parameter_description> the refresh interval to the next frame in nanoseconds
+or 0 to keep the predicted interval.
 </parameter_description>
 </parameter>
 </parameters>
@@ -11347,6 +11537,33 @@ See [method@Gdk.FrameTimings.get_complete].
 </return>
 </function>
 
+<function name="gdk_frame_timings_get_result">
+<description>
+Gets the result of the frame cycle that recorded these timings. 
+
+The timing information in a `GdkFrameTimings` is filled in
+incrementally as the frame as drawn and passed off to the
+window system for processing and display to the user. The
+accessor functions for `GdkFrameTimings` can return 0 to
+indicate an unavailable value for two reasons: either because
+the information is not yet available, or because it isn't
+available at all. Looking at the result of the timings gives
+an explanation for why a value is not available.
+
+Since: 4.24
+
+</description>
+<parameters>
+<parameter name="timings">
+<parameter_description> a `GdkFrameTimings`
+</parameter_description>
+</parameter>
+</parameters>
+<return> The result of the frame these timings have been recorded for.
+
+</return>
+</function>
+
 <function name="gdk_frame_timings_ref">
 <description>
 Increases the reference count of @timings.
@@ -11361,6 +11578,40 @@ Increases the reference count of @timings.
 </parameters>
 <return> @timings
 </return>
+</function>
+
+<function name="gdk_frame_timings_setup">
+<description>
+Initializes the required values for a `GdkFrameTimings`.
+
+All provided timestamps are in nanoseconds.
+
+</description>
+<parameters>
+<parameter name="self">
+<parameter_description> the timings
+</parameter_description>
+</parameter>
+<parameter name="frame_time">
+<parameter_description> the frame time
+</parameter_description>
+</parameter>
+<parameter name="predicted_presentation_time">
+<parameter_description> The predicted presentation time
+</parameter_description>
+</parameter>
+<parameter name="frame_start_time">
+<parameter_description> The time this frame started the
+`GDK_FRAME_STAGE_FLUSH_EVENTS` stage
+</parameter_description>
+</parameter>
+<parameter name="stage_start_time">
+<parameter_description> The time this frame started the
+`GDK_FRAME_STAGE_BEFORE_PAINT` stage
+</parameter_description>
+</parameter>
+</parameters>
+<return></return>
 </function>
 
 <function name="gdk_frame_timings_unref">
@@ -12637,6 +12888,35 @@ but without the leading “GDK_KEY_”.
 </parameters>
 <return> the corresponding key value, or `GDK_KEY_VoidSymbol`
 if the key name is not a valid key
+</return>
+</function>
+
+<function name="gdk_keyval_get_aliases">
+<description>
+Gets keyvals that are 'aliases' for @keyval.
+
+Aliases are meant to be functionally equivalent and
+should be treated the same with respect to keyboard
+shortcuts, etc. An example are keypad keys that are
+aliases for their normal counterpart, such as
+`GDK_KEY_KP_Left` and `GDK_KEY_Left`.
+
+Since: 4.24
+
+</description>
+<parameters>
+<parameter name="keyval">
+<parameter_description> the keyval to get aliases for
+</parameter_description>
+</parameter>
+<parameter name="n_aliases">
+<parameter_description> return location for the number of aliases
+</parameter_description>
+</parameter>
+</parameters>
+<return>
+an array of keyvals
+
 </return>
 </function>
 

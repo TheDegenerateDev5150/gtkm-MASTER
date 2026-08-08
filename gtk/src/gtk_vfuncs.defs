@@ -1045,32 +1045,6 @@
   (return-type "void")
 )
 
-(define-vfunc restore_state
-  (of-object "GtkApplication")
-  (return-type "gboolean")
-  (parameters
-    '("GtkRestoreReason" "reason")
-    '("GVariant*" "state")
-  )
-)
-
-(define-vfunc restore_window
-  (of-object "GtkApplication")
-  (return-type "void")
-  (parameters
-    '("GtkRestoreReason" "reason")
-    '("GVariant*" "state")
-  )
-)
-
-(define-vfunc save_state
-  (of-object "GtkApplication")
-  (return-type "gboolean")
-  (parameters
-    '("GVariantDict*" "state")
-  )
-)
-
 (define-vfunc window_added
   (of-object "GtkApplication")
   (return-type "void")
@@ -1084,14 +1058,6 @@
   (return-type "void")
   (parameters
     '("GtkWindow*" "window")
-  )
-)
-
-(define-vfunc save_state
-  (of-object "GtkApplicationWindow")
-  (return-type "gboolean")
-  (parameters
-    '("GVariantDict*" "dict")
   )
 )
 

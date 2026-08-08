@@ -2244,117 +2244,6 @@ to delay the end of the session until state has been saved.
 <return></return>
 </signal>
 
-<signal name="GtkApplication::restore-state">
-<description>
-Emitted when application global state is restored.
-
-The handler for this signal should do the opposite of what the
-corresponding handler for [signal@Gtk.Application::save-state]
-does.
-
-You must be careful to be robust in the face of app upgrades and downgrades:
-the @state might have been created by a previous or occasionally even a future
-version of your app. Do not assume that a given key exists in the state.
-Apps must try to restore state saved by a previous version, but are free to
-discard state if it was written by a future version.
-
-Since: 4.24
-
-</description>
-<parameters>
-<parameter name="application">
-<parameter_description> the application which emitted the signal
-</parameter_description>
-</parameter>
-<parameter name="reason">
-<parameter_description> the reason for restoring state
-</parameter_description>
-</parameter>
-<parameter name="state">
-<parameter_description> an `a{sv}` dictionary containing the state to restore, as saved by a [signal@Gtk.Application::save-state] handler
-</parameter_description>
-</parameter>
-</parameters>
-<return> true to stop further handlers from running
-
-</return>
-</signal>
-
-<signal name="GtkApplication::restore-window">
-<description>
-Emitted when an application's per-window state is restored.
-
-In response to this signal, you should create a new application
-window, add it to @application, apply the provided @state, and present it.
-The application can use the @reason to determine how much of the state
-should be restored.
-
-You must be careful to be robust in the face of app upgrades and downgrades:
-the @state might have been created by a previous or occasionally even a future
-version of your app. Do not assume that a given key exists in the state.
-Apps must try to restore state saved by a previous version, but are free to
-discard state if it was written by a future version.
-
-GTK will remember which window the user was using most recently, and will
-emit this signal for that window first. Thus, if you decide that the provided
-@reason means that only one window should be restored, you can reliably
-ignore emissions if a window already exists
-
-This signal will be emitted whenever the application needs to restore its
-windows. This normally happens during the initial launch, but it can also
-happen in the existing application instance if it is re-activated after all
-application windows were closed.
-
-Since: 4.24
-
-</description>
-<parameters>
-<parameter name="application">
-<parameter_description> the application which emitted the signal
-</parameter_description>
-</parameter>
-<parameter name="reason">
-<parameter_description> the reason this window is restored
-</parameter_description>
-</parameter>
-<parameter name="state">
-<parameter_description> an `a{sv}` dictionary containing the state to restore, as saved by a [signal@Gtk.ApplicationWindow::save-state] handler
-</parameter_description>
-</parameter>
-</parameters>
-<return></return>
-</signal>
-
-<signal name="GtkApplication::save-state">
-<description>
-Emitted when the application is saving global state.
-
-The handler for this signal should persist any global state of
-@application into @dict.
-
-See [signal@Gtk.Application::restore-state] for how to
-restore global state, and [signal@Gtk.ApplicationWindow::save-state]
-and [signal@Gtk.Application::restore-window] for handling
-per-window state.
-
-Since: 4.24
-
-</description>
-<parameters>
-<parameter name="application">
-<parameter_description> the application which emitted the signal
-</parameter_description>
-</parameter>
-<parameter name="dict">
-<parameter_description> a dictionary to populate with application state
-</parameter_description>
-</parameter>
-</parameters>
-<return> true to stop further handlers from running
-
-</return>
-</signal>
-
 <signal name="GtkApplication::window-added">
 <description>
 Emitted when a window is added to an application.
@@ -2403,16 +2292,6 @@ The currently focused window of the application.
 </description>
 </property>
 
-<property name="GtkApplication:autosave-interval">
-<description>
-The number of seconds between automatic state saves. Defaults to 15.
-A value of 0 will opt out of automatic state saving.
-
-Since: 4.24
-
-</description>
-</property>
-
 <property name="GtkApplication:menubar">
 <description>
 The menu model to be used for the application's menu bar.
@@ -2444,76 +2323,6 @@ Linux.
 </description>
 </property>
 
-<property name="GtkApplication:support-save">
-<description>
-Set this property to true if the application supports
-state saving and restoring.
-
-Since: 4.24
-
-</description>
-</property>
-
-<signal name="GtkApplicationClass::restore_state">
-<description>
-Class closure for the [signal@Application::restore-state] signal.
-
-Since: 4.24
-
-</description>
-<parameters>
-<parameter name="reason">
-<parameter_description> the reason for restoring state
-</parameter_description>
-</parameter>
-<parameter name="state">
-<parameter_description> a dictionary containing the application state to restore
-</parameter_description>
-</parameter>
-</parameters>
-<return> true to stop further handlers from running
-
-</return>
-</signal>
-
-<signal name="GtkApplicationClass::restore_window">
-<description>
-Class closure for the [signal@Application::restore-window] signal.
-
-Since: 4.24
-
-</description>
-<parameters>
-<parameter name="reason">
-<parameter_description> the reason this window is restored
-</parameter_description>
-</parameter>
-<parameter name="state">
-<parameter_description> a dictionary containing the application window state to restore
-</parameter_description>
-</parameter>
-</parameters>
-<return></return>
-</signal>
-
-<signal name="GtkApplicationClass::save_state">
-<description>
-Class closure for the [signal@Application::save-state] signal.
-
-Since: 4.24
-
-</description>
-<parameters>
-<parameter name="state">
-<parameter_description> a dictionary to populate with application state
-</parameter_description>
-</parameter>
-</parameters>
-<return> true to stop further handlers from running
-
-</return>
-</signal>
-
 <enum name="GtkApplicationInhibitFlags">
 <description>
 Types of user actions that may be blocked by `GtkApplication`.
@@ -2544,35 +2353,6 @@ marked as idle (and possibly locked)
 </parameters>
 </enum>
 
-<signal name="GtkApplicationWindow::save-state">
-<description>
-The handler for this signal should persist any application-specific
-state of @window into @dict.
-
-Note that window management state such as maximized, fullscreen,
-or window size should not be saved as part of this. They are handled
-by GTK.
-
-See [signal@Gtk.Application::restore-window].
-
-Since: 4.24
-
-</description>
-<parameters>
-<parameter name="window">
-<parameter_description> the window which emitted the signal
-</parameter_description>
-</parameter>
-<parameter name="dict">
-<parameter_description> a dictionary to populate with application window state
-</parameter_description>
-</parameter>
-</parameters>
-<return> true to stop stop further handlers from running
-
-</return>
-</signal>
-
 <property name="GtkApplicationWindow:show-menubar">
 <description>
 If this property is true, the window will display a menubar
@@ -2585,24 +2365,6 @@ of whether the desktop shell is showing it or not.
 
 </description>
 </property>
-
-<signal name="GtkApplicationWindowClass::save_state">
-<description>
-Class closure for the [signal@ApplicationWindow::save-state] signal.
-
-Since: 4.24
-
-</description>
-<parameters>
-<parameter name="dict">
-<parameter_description> a dictionary to populate with application window state
-</parameter_description>
-</parameter>
-</parameters>
-<return> true to stop stop further handlers from running
-
-</return>
-</signal>
 
 <enum name="GtkArrowType">
 <description>
@@ -7280,6 +7042,28 @@ The @start_pos and @end_pos parameters are interpreted as for
 <return></return>
 </signal>
 
+<signal name="GtkEditable::input-intercepted">
+<description>
+Emitted whenever keyboard input has been handled through the
+input interceptor widget set through [method@Gtk.Editable.set_input_interceptor]
+
+A typical reaction to this event would be to show and focus @editable, so
+that input is handled directly. In that case keyboard input will no longer
+be handled through the input interceptor and this signal will stop being
+emitted.
+
+Since: 4.24
+
+</description>
+<parameters>
+<parameter name="editable">
+<parameter_description> the object which received the signal
+</parameter_description>
+</parameter>
+</parameters>
+<return></return>
+</signal>
+
 <signal name="GtkEditable::insert-text">
 <description>
 Emitted when text is inserted into the widget by the user.
@@ -7342,6 +7126,15 @@ Whether the entry contents can be edited.
 <property name="GtkEditable:enable-undo">
 <description>
 If undo/redo should be enabled for the editable.
+
+</description>
+</property>
+
+<property name="GtkEditable:input-interceptor">
+<description>
+The widget used to intercept input for this editable
+
+Since: 4.24
 
 </description>
 </property>
@@ -7433,6 +7226,10 @@ implement the `GtkEditable` interface.
 </parameter>
 <parameter name="GTK_EDITABLE_PROP_COMPLETE_TEXT">
 <parameter_description> the property id for [property@Gtk.Editable:complete-text]
+</parameter_description>
+</parameter>
+<parameter name="GTK_EDITABLE_PROP_INPUT_INTERCEPTOR">
+<parameter_description> the property id for [property@Gtk.Editable:input-interceptor]
 </parameter_description>
 </parameter>
 <parameter name="GTK_EDITABLE_NUM_PROPERTIES">
@@ -15451,6 +15248,10 @@ Emitted when the popover is closed.
 <description>
 Whether to dismiss the popover on outside clicks.
 
+If false, the popover won't automatically grab the focus when shown.
+This is useful for usecases like entry completion, where the focus is
+expected to stay on the entry.
+
 </description>
 </property>
 
@@ -17200,35 +17001,6 @@ or if the dialog gets programmatically hidden or destroyed
 </parameters>
 </enum>
 
-<enum name="GtkRestoreReason">
-<description>
-Enumerates possible reasons for an application to restore saved state.
-
-See [signal@Gtk.Application::restore-state].
-
-Since: 4.24
-
-</description>
-<parameters>
-<parameter name="GTK_RESTORE_REASON_PRISTINE">
-<parameter_description> Don't restore anything
-</parameter_description>
-</parameter>
-<parameter name="GTK_RESTORE_REASON_LAUNCH">
-<parameter_description> This is normal launch. Restore as little as is reasonable
-</parameter_description>
-</parameter>
-<parameter name="GTK_RESTORE_REASON_RECOVER">
-<parameter_description> The application has crashed before. Try to restore the previous state
-</parameter_description>
-</parameter>
-<parameter name="GTK_RESTORE_REASON_RESTORE">
-<parameter_description> This is a session restore. Restore the previous state as far as possible
-</parameter_description>
-</parameter>
-</parameters>
-</enum>
-
 <property name="GtkRevealer:child">
 <description>
 The child widget.
@@ -18539,6 +18311,14 @@ styles can be set with the [property@Gtk.CssProvider:prefers-reduced-motion]
 property.
 
 Since: 4.22
+
+</description>
+</property>
+
+<property name="GtkSettings:gtk-keyboard-focus-visible-timeout">
+<description>
+Time in seconds that the focus is visible when using keyboard navigation. A zero value means &quot;forever&quot;, and a negative
+value means &quot;toolkit default timeout&quot;.
 
 </description>
 </property>
@@ -20840,6 +20620,20 @@ Since: 4.24
 <property name="GtkSvgWidget:stylesheet">
 <description>
 A CSS stylesheet to apply to the SVG.
+
+Since: 4.24
+
+</description>
+</property>
+
+<property name="GtkSvgWidget:svg">
+<description>
+The GtkSvg paintable used for rendering.
+
+This property is mainly useful for making details of the
+SVG rendering machinery available in the GTK inspector.
+
+You should not modify the returned object.
 
 Since: 4.24
 
@@ -28348,6 +28142,29 @@ alternative, create a new alternative trigger for each option.
 </return>
 </function>
 
+<function name="gtk_alternative_trigger_newv">
+<description>
+Creates a `GtkShortcutTrigger` that will trigger whenever
+any of the given triggers gets triggered.
+
+Since: 4.24
+
+</description>
+<parameters>
+<parameter name="triggers">
+<parameter_description> the triggers
+</parameter_description>
+</parameter>
+<parameter name="n_triggers">
+<parameter_description> the number of triggers
+</parameter_description>
+</parameter>
+</parameters>
+<return> a new `GtkShortcutTrigger`
+
+</return>
+</function>
+
 <function name="gtk_any_filter_new">
 <description>
 Creates a new empty &quot;any&quot; filter.
@@ -29081,25 +28898,6 @@ GTK will keep the application running as long as it has any windows.
 <return></return>
 </function>
 
-<function name="gtk_application_forget">
-<description>
-Forget state that has been previously saved and prevent further automatic
-state saving.
-
-In order to re-enable state saving, call [method@Gtk.Application.save].
-
-Since: 4.24
-
-</description>
-<parameters>
-<parameter name="application">
-<parameter_description> an application
-</parameter_description>
-</parameter>
-</parameters>
-<return></return>
-</function>
-
 <function name="gtk_application_get_accels_for_action">
 <description>
 Gets the accelerators that are currently associated with
@@ -29398,24 +29196,6 @@ function, if the window was the last window of the application.
 </parameter>
 <parameter name="window">
 <parameter_description> a window
-</parameter_description>
-</parameter>
-</parameters>
-<return></return>
-</function>
-
-<function name="gtk_application_save">
-<description>
-Saves the state of the application.
-
-See [method@Gtk.Application.forget] for a way to forget the state.
-
-Since: 4.24
-
-</description>
-<parameters>
-<parameter name="application">
-<parameter_description> an application
 </parameter_description>
 </parameter>
 </parameters>
@@ -45175,6 +44955,25 @@ Gets if undo/redo actions are enabled for @editable
 </return>
 </function>
 
+<function name="gtk_editable_get_input_interceptor">
+<description>
+Retrieves the widget that was previously set up as input interceptor
+for @editable. See [method@Gtk.Editable.set_input_interceptor].
+
+Since: 4.24
+
+</description>
+<parameters>
+<parameter name="editable">
+<parameter_description> a `GtkEditable`
+</parameter_description>
+</parameter>
+</parameters>
+<return> The editable widget
+
+</return>
+</function>
+
 <function name="gtk_editable_get_max_width_chars">
 <description>
 Retrieves the desired maximum width of @editable, in characters.
@@ -45516,6 +45315,35 @@ when [property@Gtk.Text:visibility] is set to %FALSE.
 </parameter>
 <parameter name="enable_undo">
 <parameter_description> if undo/redo should be enabled
+</parameter_description>
+</parameter>
+</parameters>
+<return></return>
+</function>
+
+<function name="gtk_editable_set_input_interceptor">
+<description>
+Sets @interceptor as the widget that @editable will intercept key events from.
+
+A typical usecase for this is implementing auto-showing search entries, so
+that textual input may be intercepted from another widget and handled first
+hand by the given editable. The events will be handled in the bubble phase
+of @interceptor, which means that editable child widgets of @interceptor will
+receive the text input before it can be captured.
+
+Only those events that would be handled by an input method will be handled,
+this excludes combinations of Ctrl/Alt/Mod, and other shortcuts.
+
+Since: 4.24
+
+</description>
+<parameters>
+<parameter name="editable">
+<parameter_description> a `GtkEditable`
+</parameter_description>
+</parameter>
+<parameter name="interceptor">
+<parameter_description> the input interceptor widget
 </parameter_description>
 </parameter>
 </parameters>
@@ -48024,6 +47852,7 @@ This function can only be used in handlers for the
 [signal@Gtk.EventControllerKey::key-released]
 or [signal@Gtk.EventControllerKey::modifiers] signals.
 
+Deprecated: 4.24: Use [method@Gtk.Editable.set_input_interceptor] instead
 
 </description>
 <parameters>
@@ -48037,6 +47866,7 @@ or [signal@Gtk.EventControllerKey::modifiers] signals.
 </parameter>
 </parameters>
 <return> whether the @widget handled the event
+
 </return>
 </function>
 
@@ -59791,6 +59621,24 @@ feedback or reset the contexts state to reflect this change.
 </parameter>
 </parameters>
 <return></return>
+</function>
+
+<function name="gtk_im_context_get_client_widget">
+<description>
+Retrieves the client widget for the input context.
+
+Since: 4.24
+
+</description>
+<parameters>
+<parameter name="context">
+<parameter_description> a `GtkIMContext`
+</parameter_description>
+</parameter>
+</parameters>
+<return> The client widget
+
+</return>
 </function>
 
 <function name="gtk_im_context_get_preedit_string">
@@ -83194,6 +83042,49 @@ or be greater than @trigger2.
 </return>
 </function>
 
+<function name="gtk_shortcut_trigger_create_for_menu">
+<description>
+Creates a shortcut trigger that will trigger for
+the usual key combinations that trigger a context
+menu, such as &lt;kbd&gt;Menu&lt;/kbd&gt; or
+&lt;kbd&gt;Shift&lt;/kbd&gt;+&lt;kbd&gt;F10&lt;/kbd&gt;.
+
+Since: 4.24
+
+</description>
+<parameters>
+</parameters>
+<return> a new `GtkShortcutTrigger`
+
+</return>
+</function>
+
+<function name="gtk_shortcut_trigger_create_with_aliases">
+<description>
+Creates a shortcut trigger that will trigger for
+any alias of the given key.
+
+See [func@Gdk.keyval_get_aliases] for more information
+on aliases.
+
+Since: 4.24
+
+</description>
+<parameters>
+<parameter name="keyval">
+<parameter_description> The keyval to trigger for
+</parameter_description>
+</parameter>
+<parameter name="modifiers">
+<parameter_description> the modifiers that need to be present
+</parameter_description>
+</parameter>
+</parameters>
+<return> a new `GtkShortcutTrigger`
+
+</return>
+</function>
+
 <function name="gtk_shortcut_trigger_equal">
 <description>
 Checks if @trigger1 and @trigger2 trigger under the same conditions.
@@ -83253,7 +83144,7 @@ The accepted strings are:
 - `never`, for `GtkNeverTrigger`
 - a string parsed by gtk_accelerator_parse(), for a `GtkKeyvalTrigger`, e.g. `&lt;Control&gt;C`
 - underscore, followed by a single character, for `GtkMnemonicTrigger`, e.g. `_l`
-- two valid trigger strings, separated by a `|` character, for a
+- two or more valid trigger strings, separated by a `|` character, for a
 `GtkAlternativeTrigger`: `&lt;Control&gt;q|&lt;Control&gt;w`
 
 Note that you will have to escape the `&lt;` and `&gt;` characters when specifying
@@ -106635,6 +106526,11 @@ initialization. It does not provide for user data, if you need that,
 you will have to use [method@Gtk.WidgetClass.add_shortcut] with a custom
 shortcut.
 
+Note: Since 4.24, this function takes key aliases into account.
+See [func@Gdk.keyval_get_aliases] for more information on key aliases.
+To make a shortcut for an individual key, use
+[method@Gtk.WidgetClass.add_shortcut].
+
 </description>
 <parameters>
 <parameter name="widget_class">
@@ -106677,6 +106573,11 @@ This function is a convenience wrapper around
 [method@Gtk.WidgetClass.add_shortcut] and must be called during class
 initialization.
 
+Note: Since 4.24, this function takes key aliases into account.
+See [func@Gdk.keyval_get_aliases] for more information on key aliases.
+To make a shortcut for an individual key, use
+[method@Gtk.WidgetClass.add_shortcut].
+
 </description>
 <parameters>
 <parameter name="widget_class">
@@ -106718,6 +106619,11 @@ with [ctor@GLib.Variant.new].
 This function is a convenience wrapper around
 [method@Gtk.WidgetClass.add_shortcut] and must be called during class
 initialization.
+
+Note: Since 4.24, this function takes key aliases into account.
+See [func@Gdk.keyval_get_aliases] for more information on key aliases.
+To make a shortcut for an individual key, use
+[method@Gtk.WidgetClass.add_shortcut].
 
 </description>
 <parameters>

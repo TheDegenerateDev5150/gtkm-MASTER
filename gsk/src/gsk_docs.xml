@@ -741,6 +741,12 @@ Since: 4.22
 Since: 4.22
 </parameter_description>
 </parameter>
+<parameter name="GSK_TURBULENCE_NODE">
+<parameter_description>A node that generates a Perlin noise or fractal Brownian motion pattern.
+
+Since: 4.24
+</parameter_description>
+</parameter>
 </parameters>
 </enum>
 

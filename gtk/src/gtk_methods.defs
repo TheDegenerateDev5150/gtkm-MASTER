@@ -6974,6 +6974,12 @@
   (return-type "gboolean")
 )
 
+(define-method get_input_interceptor
+  (of-object "GtkEditable")
+  (c-name "gtk_editable_get_input_interceptor")
+  (return-type "GtkWidget*")
+)
+
 (define-method get_max_width_chars
   (of-object "GtkEditable")
   (c-name "gtk_editable_get_max_width_chars")
@@ -7059,6 +7065,15 @@
   (return-type "none")
   (parameters
     '("gboolean" "enable_undo")
+  )
+)
+
+(define-method set_input_interceptor
+  (of-object "GtkEditable")
+  (c-name "gtk_editable_set_input_interceptor")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "interceptor")
   )
 )
 
@@ -8780,6 +8795,16 @@
   )
 )
 
+(define-function gtk_alternative_trigger_newv
+  (c-name "gtk_alternative_trigger_newv")
+  (is-constructor-of "GtkAlternativeTrigger")
+  (return-type "GtkShortcutTrigger*")
+  (parameters
+    '("GtkShortcutTrigger**" "triggers")
+    '("size_t" "n_triggers")
+  )
+)
+
 (define-function gtk_any_filter_new
   (c-name "gtk_any_filter_new")
   (is-constructor-of "GtkAnyFilter")
@@ -9032,12 +9057,6 @@
   )
 )
 
-(define-method forget
-  (of-object "GtkApplication")
-  (c-name "gtk_application_forget")
-  (return-type "none")
-)
-
 (define-method get_accels_for_action
   (of-object "GtkApplication")
   (c-name "gtk_application_get_accels_for_action")
@@ -9116,12 +9135,6 @@
   (parameters
     '("GtkWindow*" "window")
   )
-)
-
-(define-method save
-  (of-object "GtkApplication")
-  (c-name "gtk_application_save")
-  (return-type "none")
 )
 
 (define-method set_accels_for_action
@@ -17825,6 +17838,12 @@
   (return-type "none")
 )
 
+(define-method get_client_widget
+  (of-object "GtkIMContext")
+  (c-name "gtk_im_context_get_client_widget")
+  (return-type "GtkWidget*")
+)
+
 (define-method get_preedit_string
   (of-object "GtkIMContext")
   (c-name "gtk_im_context_get_preedit_string")
@@ -26173,6 +26192,20 @@
   (return-type "GtkWidget*")
   (parameters
     '("const-char*" "accelerator")
+  )
+)
+
+(define-function gtk_shortcut_trigger_create_for_menu
+  (c-name "gtk_shortcut_trigger_create_for_menu")
+  (return-type "GtkShortcutTrigger*")
+)
+
+(define-function gtk_shortcut_trigger_create_with_aliases
+  (c-name "gtk_shortcut_trigger_create_with_aliases")
+  (return-type "GtkShortcutTrigger*")
+  (parameters
+    '("unsigned-int" "keyval")
+    '("GdkModifierType" "modifiers")
   )
 )
 
