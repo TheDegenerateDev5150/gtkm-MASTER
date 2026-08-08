@@ -29,6 +29,7 @@ typedef struct _GtkEditableInterface GtkEditableInterface;
 
 namespace Gtk
 {
+class GTKMM_API Widget;
 
 /** Base class for text-editing widgets.
  *
@@ -75,6 +76,15 @@ public:
   _WRAP_METHOD(bool get_enable_undo() const, gtk_editable_get_enable_undo)
   _WRAP_METHOD(void set_enable_undo(bool enable_undo = true), gtk_editable_set_enable_undo)
 
+  _WRAP_METHOD(void set_input_interceptor(Widget& interceptor), gtk_editable_set_input_interceptor)
+  /** See set_input_interceptor().
+   * @newin{4,24}
+   */
+  void unset_input_interceptor();
+  _WRAP_METHOD_DOCS_ONLY(gtk_editable_get_input_interceptor)
+  Widget* get_input_interceptor();
+  _WRAP_METHOD(const Widget* get_input_interceptor() const, gtk_editable_get_input_interceptor, constversion)
+
   // Don't wrap API for implementations. Should it be wrapped?
   _IGNORE(gtk_editable_install_properties, gtk_editable_get_delegate, gtk_editable_init_delegate,
     gtk_editable_finish_delegate, gtk_editable_delegate_set_property, gtk_editable_delegate_get_property,
@@ -117,6 +127,8 @@ dnl // C prototype: void insert_text(const char* text, int length, int* position
 
   _WRAP_SIGNAL(void delete_text(int start_pos, int end_pos), "delete_text")
   _WRAP_SIGNAL(void changed(), "changed")
+  // no_default_handler because the wrapped C signal has no default handler.
+  _WRAP_SIGNAL(void input_intercepted(), "input-intercepted", no_default_handler)
 
   _WRAP_PROPERTY("text", Glib::ustring)
   _WRAP_PROPERTY("complete-text", Glib::ustring)
@@ -127,6 +139,7 @@ dnl // C prototype: void insert_text(const char* text, int length, int* position
   _WRAP_PROPERTY("width-chars", int)
   _WRAP_PROPERTY("max-width-chars", int)
   _WRAP_PROPERTY("xalign", float)
+  _WRAP_PROPERTY("input-interceptor", Widget*)
 
 protected:
 

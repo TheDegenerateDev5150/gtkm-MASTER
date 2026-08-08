@@ -14,4 +14,23 @@
  * License along with this library; if not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <gtkmm/widget.h>
 #include <gtk/gtk.h>
+
+namespace Gtk
+{
+void Editable::unset_input_interceptor()
+{
+  gtk_editable_set_input_interceptor(gobj(), nullptr);
+}
+
+Widget* Editable::get_input_interceptor()
+{
+  GtkWidget* interceptor = gtk_editable_get_input_interceptor(gobj());
+  // gtk_editable_get_input_interceptor() gives us an extra reference that we don't want.
+  if (interceptor)
+    g_object_unref(interceptor);
+  return Glib::wrap(interceptor);
+}
+
+} // namespace Gtk

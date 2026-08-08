@@ -79,6 +79,7 @@ public:
   _WRAP_PROPERTY("resource", std::string)
   _WRAP_PROPERTY("state", unsigned int)
   _WRAP_PROPERTY("stylesheet", Glib::RefPtr<Glib::Bytes>)
+  _WRAP_PROPERTY("svg", Glib::RefPtr<Svg>)
 };
 
 } // namespace Gtk

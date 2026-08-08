@@ -56,6 +56,7 @@ public:
   _WRAP_PROPERTY("accessible-role", Accessible::Role)
   _WRAP_PROPERTY("accessible", Glib::RefPtr<Accessible>)
   _WRAP_PROPERTY("display", Glib::RefPtr<Gdk::Display>)
+  _WRAP_PROPERTY("realized", bool)
 
   // no_default_handler because the wrapped C signal has no default handler.
   _WRAP_SIGNAL(void state_change(), "state-change", no_default_handler)

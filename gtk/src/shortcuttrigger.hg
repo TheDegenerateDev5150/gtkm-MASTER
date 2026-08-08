@@ -51,6 +51,11 @@ protected:
   _CTOR_DEFAULT()
 
 public:
+  _WRAP_METHOD(static Glib::RefPtr<ShortcutTrigger> create_with_aliases(unsigned int keyval,
+    Gdk::ModifierType modifiers), gtk_shortcut_trigger_create_with_aliases)
+  _WRAP_METHOD(static Glib::RefPtr<ShortcutTrigger> create_for_menu(),
+    gtk_shortcut_trigger_create_for_menu)
+
   _WRAP_METHOD(static Glib::RefPtr<ShortcutTrigger> parse_string(const Glib::ustring& string),
     gtk_shortcut_trigger_parse_string)
 
@@ -151,7 +156,11 @@ public:
   _WRAP_PROPERTY("keyval", guint)
 };
 
-/** A Gtk::ShortcutTrigger that triggers when either of two ShortcutTriggers trigger.
+/** Combines two shortcut triggers.
+ *
+ * The `%Gtk::AlternativeTrigger` triggers when either of the two trigger.
+ *
+ * This can be cascaded to combine more than two triggers.
  */
 class GTKMM_API AlternativeTrigger : public ShortcutTrigger
 {

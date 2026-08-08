@@ -19,6 +19,7 @@ _CONFIGINCLUDE(gdkmmconfig.h)
 _DEFS(gdkmm,gdk)
 
 #include <glibmm/refptr.h>
+#include <gdkmm/enums.h>
 
 _CC_INCLUDE(gdk/gdk.h)
 
@@ -47,6 +48,7 @@ class GDKMM_API FrameTimings final
 public:
   _WRAP_METHOD(gint64 get_frame_counter() const, gdk_frame_timings_get_frame_counter)
   _WRAP_METHOD(bool get_complete() const, gdk_frame_timings_get_complete)
+  _WRAP_METHOD(FrameResult get_result() const, gdk_frame_timings_get_result)
   _WRAP_METHOD(gint64 get_frame_time() const, gdk_frame_timings_get_frame_time)
   _WRAP_METHOD(gint64 get_presentation_time() const, gdk_frame_timings_get_presentation_time)
   _WRAP_METHOD(gint64 get_refresh_interval() const, gdk_frame_timings_get_refresh_interval)
