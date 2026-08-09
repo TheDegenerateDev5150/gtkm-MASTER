@@ -1,4 +1,4 @@
-# 2026-05-17: ubuntu:latest = 26.04, ubuntu:rolling = 26.04, ubuntu:devel = ??.??
+# 2026-08-09: ubuntu:latest = 26.04, ubuntu:rolling = 26.04, ubuntu:devel = 26.10
 # See https://hub.docker.com/_/ubuntu
 image: ubuntu:rolling
 
@@ -78,8 +78,7 @@ release_gcc_build:
     # meson setup --prefix=/usr --libdir=lib -Ddebug=false -Doptimization=3 -Dwarnings=fatal -Dwarning_level=3 -Dwerror=true
     # Don't use warnings=fatal. Accept that functions can be deprecated in gtk but not in gtkmm.
     # meson setup --prefix=/usr --libdir=lib -Ddebug=false -Doptimization=3 -Dwarnings=fatal
-    # Use mm-common from the git repo, to get the latest doxygen-extra.css.
-    - meson setup --force-fallback-for=mm-common -Dmm-common:use-network=true --prefix=/usr --libdir=lib -Ddebug=false -Doptimization=3 -Dwarnings=max $GTK4_MESON_OPTIONS
+    - meson setup --prefix=/usr --libdir=lib -Ddebug=false -Doptimization=3 -Dwarnings=max $GTK4_MESON_OPTIONS
     - meson compile
     # Some tests fail with
     #   Unable to init Broadway server: Could not connect: No such file or directory
@@ -154,15 +153,18 @@ build_release_tarball:
     - done
     - mkdir _build && cd _build
     # Don't use warning_level and werror. They are applied also to subprojects.
-    # Use mm-common from the git repo, to get the latest doxygen-extra.css.
-    - meson setup --force-fallback-for=mm-common -Dmm-common:use-network=true --buildtype=release $GTK4_MESON_OPTIONS
+    - meson setup --buildtype=release $GTK4_MESON_OPTIONS
     # Must compile before 'meson dist' to generate source code and documentation.
     - meson compile
     # Skip tests. See release_gcc_build.
     # 'meson dist --no-tests' skips compile + test + install.
     # GTKMM_NO_DIST_TESTS skips only test.
-    - export GTKMM_NO_DIST_TESTS=1
-    - meson dist
+    # - export GTKMM_NO_DIST_TESTS=1
+    # - meson dist
+    # Use 'meson dist --no-tests' after all. Without --no-tests, 'meson dist'
+    # tests subprojects. We don't want this to fail because of a failing test
+    # in a subproject.
+    - meson dist --no-tests
   artifacts:
     name: "${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
