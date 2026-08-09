@@ -1,3 +1,10 @@
+4.23.2 (unstable) 2026-08-09
+
+Identical to 4.23.1.
+No gtkmm 4.23.1 tarball has been stored at download.gnome.org.
+The CI pipeline in GitLab failed to make that tarball.
+
+
 4.23.1 (unstable) 2026-08-09
 
 Some unstable API has been removed.
