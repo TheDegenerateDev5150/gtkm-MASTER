@@ -1,3 +1,68 @@
+4.23.1 (unstable) 2026-08-09
+
+Some unstable API has been removed.
+The corresponding API was removed in gtk 4.23.3.
+
+* Drop G_GNUC_CONST as in glib
+  (Kjell Ahlstedt) Merge request glibmm!77 (Sam James)
+
+Gdk:
+* Graphene::Point: Add Point(cobst Vec2& src), distance(), interpolate().
+* Graphene::Size: Add scale(), interpolate().
+* Add Graphene::Vec2.
+  (Kjell Ahlstedt) Issue #172 (Ben Corby)
+* Graphene::Rect: Add get_vertices(), join(), intersection(), offset(),
+  inset(), round_extents(), interpolate(), expand(), scale().
+* Don't derive gtkmm__GdkXxx GTypes from final types and internal types.
+  Such declarations have been added to many GdkXxx classes.
+* Add enum FrameResult.
+* FrameTimings: Add get_result().
+  (Kjell Ahlstedt)
+
+Gsk:
+* tools/m4/enum.m4: Flags operators are constexpr also in namespace Gsk.
+  (Kjell Ahlstedt) Issue #153 (PBS)
+* Add classes Path, PathBuilder, PathMeasure, PathPoint, Stroke.
+* Add enums LineCap, LineJoin, PathDirection.
+  (Kjell Ahlstedt) Issue #172 (Ben Corby)
+
+Gtk:
+* Rename EnumList to EnumListBase, add template EnumList.
+  (Kjell Ahlstedt)
+* Snapshot: Add push_fill(), push_stroke(), append_fill(), append_stroke().
+  (Kjell Ahlstedt) Issue #172 (Ben Corby)
+* Deprecate EventControllerKey::forward().
+  (Kjell Ahlstedt)
+* Application: Remove save(), forget(), property_support_save(),
+  property_autosave_interval(), signal_restore_window(), signal_save_state(),
+  signal_restore_state().
+* ApplicationWindow: Remove signal_save_state().
+* Remove enum RestoreReason.
+  (Kjell Ahlstedt)
+* ATContext: Add property_realized().
+* Editable: Add set/unset/get/property_input_interceptor(),
+  signal_input_intercepted().
+* Settings: Add property_gtk_keyboard_focus_visible_timeout().
+* ShortcutTrigger: Add ShortcutTrigger::create_with_aliases(),
+  create_for_menu().
+* SvgWidget: Add property_svg().
+  (Kjell Ahlstedt)
+
+Documentation:
+* Gtk::AlternativeTrigger: Update class description.
+  (Kjell Ahlstedt)
+
+Demos:
+* DropDown demo: Add a DropDown using EnumList.
+  (Kjell Ahlstedt)
+
+Build:
+* Meson: Don't export Vulkan as an installed dependency.
+  (Lukas Schmelting) Merge request !101
+* Require gtk4 >= 4.23.3
+  (Kjell Ahlstedt)
+
+
 4.23.0 (unstable) 2026-06-09
 
 Gdk:
