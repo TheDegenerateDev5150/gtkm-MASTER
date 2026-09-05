@@ -1,4 +1,4 @@
-/* Copyright (C) 1998-2002 The gtkmm Development Team
+/* Copyright (C) 1998-2026 The gtkmm Development Team
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,4 +28,21 @@
 
 namespace Gdk
 {
+  std::vector<KeymapKey> Display::map_keyval(guint keyval) const
+  {
+    GdkKeymapKey* c_keys = nullptr;
+    int n_keys = 0;
+
+    if(gdk_display_map_keyval(const_cast<GdkDisplay*>(gobj()), keyval, &c_keys, &n_keys))
+    {
+      std::vector<KeymapKey> keys;
+      keys.reserve(n_keys);
+      for(int i = 0; i < n_keys; ++i)
+        keys.emplace_back(c_keys+i);
+      g_free(c_keys);
+      return keys;
+    }
+    else
+      return {};
+  }
 } //namespace Gdk

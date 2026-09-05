@@ -45,6 +45,7 @@
 #include <gdkmm/gltexturebuilder.h>
 #include <gdkmm/graphene_rect.h>
 #include <gdkmm/graphene_vec2.h>
+#include <gdkmm/keymapkey.h>
 #include <gdkmm/memorytexture.h>
 #include <gdkmm/memorytexturebuilder.h>
 #include <gdkmm/monitor.h>
