@@ -127,7 +127,12 @@ install_pkgconfigdir = install_libdir / 'pkgconfig'
 
 # glibmm recently gained Meson build support, so we can try looking
 # for its pkg-config files on Visual Studio as well
-glibmm_req = '>= 2.75.0'
+
+# Gtk since 4.23.4 requires GLib >= 2.89.3.
+# Glibmm < 2.89.0 can't be built with GLib >= 2.89.2, where GDBusActionGroup
+# and GEmblem are final types.
+# glibmm_req = '>= 2.75.0' # What gtkmm itself requires
+glibmm_req = '>= 2.89.0' # What's required indirectly via gtk's requirement
 
 # Gtk supported pkg-config files on MSVC files for a good while, so just use that
 gtk_req = '>= 4.23.3'

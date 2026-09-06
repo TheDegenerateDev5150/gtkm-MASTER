@@ -96,7 +96,13 @@ AS_IF([test "x$enable_static" = xyes],
 # gdkmm really does need GTK, because part of Gdk::DragContext is in GTK.
 # The extra gdk-pixbuf-2.0 check is because gdkmm requires a newer gdk-pixbuf than gtk4 requires.
 # TODO: Remove the mention of cairomm once pangomm needs to depend on such a new version.
-AC_SUBST([GDKMM_MODULES], ['giomm-2.68 >= 2.75.0 pangomm-2.48 >= 2.50.0 cairomm-1.16 >= 1.15.4 gtk4 >= 4.23.3 gdk-pixbuf-2.0 >= 2.35.5'])
+#
+# Gtk since 4.23.4 requires GLib >= 2.89.3.
+# Glibmm < 2.89.0 can't be built with GLib >= 2.89.2, where GDBusActionGroup
+# and GEmblem are final types.
+# giomm-2.68 >= 2.75.0 # What gtkmm itself requires
+# giomm-2.68 >= 2.89.0 # What's required indirectly via gtk's requirement
+AC_SUBST([GDKMM_MODULES], ['giomm-2.68 >= 2.89.0 pangomm-2.48 >= 2.50.0 cairomm-1.16 >= 1.15.4 gtk4 >= 4.23.3 gdk-pixbuf-2.0 >= 2.35.5'])
 AC_SUBST([GSKMM_MODULES], [$GDKMM_MODULES])
 
 AS_IF([test "x$gtkmm_host_windows" = xyes],
