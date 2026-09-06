@@ -1,4 +1,4 @@
-/* Copyright (C) 1998-2002 The gtkmm Development Team
+/* Copyright (C) 1998-2026 The gtkmm Development Team
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,6 +18,7 @@
 
 #include <gdkmm/applaunchcontext.h>
 #include <gdkmm/event.h>
+#include <gdkmm/keymapkey.h>
 
 _DEFS(gdkmm,gdk)
 _PINCLUDE(glibmm/private/object_p.h)
@@ -131,6 +132,25 @@ public:
 
   _WRAP_METHOD(Glib::RefPtr<Monitor> get_monitor_at_surface(const Glib::RefPtr<Surface>& surface), gdk_display_get_monitor_at_surface, refreturn)
   _WRAP_METHOD(Glib::RefPtr<const Monitor> get_monitor_at_surface(const Glib::RefPtr<Surface>& surface) const, gdk_display_get_monitor_at_surface, refreturn, constversion)
+
+  /** Obtains a list of keycode/group/level combinations that will generate @a keyval.
+   *
+   * Groups and levels are two kinds of keyboard mode; in general, the level
+   * determines whether the top or bottom symbol on a key is used, and the
+   * group determines whether the left or right symbol is used.
+   * The level is computed from the modifier mask.
+   *
+   * On US keyboards, the shift key changes the keyboard level, and there
+   * are no groups. A group switch key might convert a keyboard between
+   * Hebrew to English modes, for example.
+   *
+   * @newin{4,24}
+   *
+   * @param keyval A keyval, such as GDK_KEY_a, GDK_KEY_Up, GDK_KEY_Return, etc.
+   * @return A vector of Gdk::KeymapKey.
+   */
+  std::vector<KeymapKey> map_keyval(guint keyval) const;
+  _IGNORE(gdk_display_map_keyval)
 
   _IGNORE(gdk_display_translate_key)dnl// "This function should rarely be needed"
 
