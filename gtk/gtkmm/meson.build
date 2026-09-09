@@ -5,8 +5,8 @@
 #        python3, gtkmm_rc, dummy_header_py, gmmproc_dir, macos_darwin_versions,
 #        build_deprecated_api, gmmproc_extra_m4_dirs, is_host_windows,
 #        gdkmm_library, gskmm_library, gdkmm_used_built_h_file_targets,
-#        gskmm_used_built_h_file_targets, gtkmm_libname,
-#        gtkmm_pc_requires
+#        gskmm_used_built_h_file_targets, gtkmm_libname, gtkmm_pc_requires,
+#        gdkmm_built_dummy_h_file_target, gskmm_built_dummy_h_file_target
 # Output: gtkmm_hg_ccg_basenames, gtkmm_extra_h_files, built_files_root,
 #         gtkmm_built_h_file_targets, gtkmm_own_dep
 
@@ -458,7 +458,7 @@ if maintainer_mode
   # If gtkmm_used_built_h_file_targets would be listed as sources to gtkmm_library,
   # all generated .cc files could be recompiled if one generated .h file has
   # been changed.
-  built_dummy_h_file_target = custom_target('gtkmm-dummy_header.h',
+  gtkmm_built_dummy_h_file_target = custom_target('gtkmm-dummy_header.h',
     input: gtkmm_built_h_file_targets,
     output: 'dummy_header.h',
     command: [
@@ -509,7 +509,7 @@ else # not maintainer_mode
   endforeach
 
   gtk_gen_sources = built_cc_files
-  built_dummy_h_file_target = []
+  gtkmm_built_dummy_h_file_target = []
 
   extra_include_dirs = [ '..', '..' / '..' / 'untracked' / 'gtk',
           '..' / '..' / 'gdk', '..' / '..' / 'untracked' / 'gdk',
@@ -530,7 +530,8 @@ if is_host_windows
 endif
 
 gtkmm_library = library(gtkmm_libname, extra_gtkmm_objects,
-  gtk_gen_sources, built_dummy_h_file_target, gtkmm_extra_used_cc_files,
+  gtk_gen_sources, gtkmm_built_dummy_h_file_target, gtkmm_extra_used_cc_files,
+  gdkmm_built_dummy_h_file_target, gskmm_built_dummy_h_file_target,
   implicit_include_directories: false,
   include_directories: extra_include_dirs,
   cpp_args: gtkmm_cpp_args,

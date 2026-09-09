@@ -3,10 +3,10 @@
 # Input: gskmm_build_dep, gtkmm_pcname, maintainer_mode, project_source_root,
 #        generate_binding_py, m4_files, install_includedir, python3,
 #        dummy_header_py, gmmproc_dir, build_deprecated_api,
-#        gmmproc_extra_m4_dirs
+#        gmmproc_extra_m4_dirs, gdkmm_built_dummy_h_file_target
 # Output: gskmm_hg_ccg_basenames, gskmm_extra_h_files, built_files_root,
 #         gskmm_built_h_file_targets, gskmm_used_built_h_file_targets,
-#         gskmm_library
+#         gskmm_library, gskmm_built_dummy_h_file_target
 
 gskmm_defs_basefiles = [
   'gsk.defs',
@@ -139,7 +139,7 @@ if maintainer_mode
   # If gskmm_used_built_h_file_targets would be listed as sources to gskmm_library,
   # all generated .cc files could be recompiled if one generated .h file has
   # been changed.
-  built_dummy_h_file_target = custom_target('gskmm-dummy_header.h',
+  gskmm_built_dummy_h_file_target = custom_target('gskmm-dummy_header.h',
     input: gskmm_built_h_file_targets,
     output: 'dummy_header.h',
     command: [
@@ -190,7 +190,7 @@ else # not maintainer_mode
   endforeach
 
   gsk_gen_sources = built_cc_files
-  built_dummy_h_file_target = []
+  gskmm_built_dummy_h_file_target = []
 
   extra_include_dirs = [ '..', '..' / '..' / 'untracked' / 'gsk',
           '..' / '..' / 'gdk', '..' / '..' / 'untracked' / 'gdk']
@@ -202,7 +202,8 @@ endif
 # This is an internal static library.
 # The objects in this library will be included in gtkmm_library.
 gskmm_library = static_library('gskmm',
-  gsk_gen_sources, built_dummy_h_file_target, gskmm_extra_cc_files,
+  gsk_gen_sources, gskmm_built_dummy_h_file_target, gskmm_extra_cc_files,
+  gdkmm_built_dummy_h_file_target,
   implicit_include_directories: false,
   include_directories: extra_include_dirs,
   cpp_args: gskmm_cpp_args,

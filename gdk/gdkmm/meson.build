@@ -6,7 +6,7 @@
 #        gmmproc_extra_m4_dirs
 # Output: gdkmm_hg_ccg_basenames, gdkmm_extra_h_files, built_files_root,
 #         gdkmm_built_h_file_targets, gdkmm_used_built_h_file_targets,
-#         gdkmm_library
+#         gdkmm_library, gdkmm_built_dummy_h_file_target
 
 gdkmm_defs_basefiles = [
   'gdk.defs',
@@ -201,7 +201,7 @@ if maintainer_mode
   # If gdkmm_used_built_h_file_targets would be listed as sources to gdkmm_library,
   # all generated .cc files could be recompiled if one generated .h file has
   # been changed.
-  built_dummy_h_file_target = custom_target('gdkmm-dummy_header.h',
+  gdkmm_built_dummy_h_file_target = custom_target('gdkmm-dummy_header.h',
     input: gdkmm_built_h_file_targets,
     output: 'dummy_header.h',
     command: [
@@ -252,7 +252,7 @@ else # not maintainer_mode
   endforeach
 
   gdk_gen_sources = built_cc_files
-  built_dummy_h_file_target = []
+  gdkmm_built_dummy_h_file_target = []
 
   extra_include_dirs = [ '..', '..' / '..' / 'untracked' / 'gdk' ]
 
@@ -263,7 +263,7 @@ endif
 # This is an internal static library.
 # The objects in this library will be included in gtkmm_library.
 gdkmm_library = static_library('gdkmm',
-  gdk_gen_sources, built_dummy_h_file_target, gdkmm_extra_cc_files,
+  gdk_gen_sources, gdkmm_built_dummy_h_file_target, gdkmm_extra_cc_files,
   implicit_include_directories: false,
   include_directories: extra_include_dirs,
   cpp_args: gdkmm_cpp_args,
