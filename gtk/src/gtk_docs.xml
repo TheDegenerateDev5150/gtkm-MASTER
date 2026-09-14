@@ -17969,6 +17969,18 @@ action can be triggered
 </parameters>
 </enum>
 
+<property name="GtkSettings:gtk-accent-color">
+<description>
+The desktop accent color (if available).
+
+GTK provides this value to the CSS stylesheet as a named color
+under the name &quot;accent_color&quot;.
+
+Since: 4.24
+
+</description>
+</property>
+
 <property name="GtkSettings:gtk-alternative-button-order">
 <description>
 Whether buttons in dialogs should use the alternative button order.
@@ -18319,6 +18331,8 @@ Since: 4.22
 <description>
 Time in seconds that the focus is visible when using keyboard navigation. A zero value means &quot;forever&quot;, and a negative
 value means &quot;toolkit default timeout&quot;.
+
+Since: 4.24
 
 </description>
 </property>
@@ -89671,10 +89685,10 @@ Checks whether the `GtkAccessible` has @state set.
 <description>
 This function is used to initialize a GTK test program.
 
-It will in turn call g_test_init() and gtk_init() to properly
-initialize the testing framework and graphical toolkit. It’ll
-also set the program’s locale to “C”. This is done to make test
-program environments as deterministic as possible.
+It will in turn call [func@GLib.test_init] and [func@Gtk.init]
+to properly initialize the testing framework and graphical toolkit.
+It will also set the program’s locale to “en_US.UTF-8”. This is done
+to make test program environments as deterministic as possible.
 
 Like gtk_init() and g_test_init(), any known arguments will be
 processed and stripped from @argc and @argv.

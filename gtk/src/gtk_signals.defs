@@ -10669,6 +10669,15 @@
   (default-value "0")
 )
 
+(define-property gtk-accent-color
+  (of-object "GtkSettings")
+  (prop-type "GParamBoxed")
+  (docs "")
+  (readable #t)
+  (writable #t)
+  (construct-only #f)
+)
+
 (define-property gtk-alternative-button-order
   (of-object "GtkSettings")
   (prop-type "GParamBoolean")
