@@ -16,6 +16,7 @@
 
 #include <glibmm/object.h>
 #include <gdkmm/display.h>
+#include <gdkmm/rgba.h>
 #include <gtkmm/enums.h>
 #include <gtkmm/styleprovider.h>
 
@@ -125,12 +126,13 @@ public:
 
   _WRAP_PROPERTY("gtk-long-press-time", guint) // since 3.14
   _WRAP_PROPERTY("gtk-keynav-use-caret", bool)
-  _WRAP_PROPERTY("gtk-keyboard-focus-visible-timeout", int, newin "4,24")
+  _WRAP_PROPERTY("gtk-keyboard-focus-visible-timeout", int)
   _WRAP_PROPERTY("gtk-overlay-scrolling", bool)
   _WRAP_PROPERTY("gtk-font-rendering", FontRendering)
   _WRAP_PROPERTY("gtk-interface-color-scheme", InterfaceColorScheme)
   _WRAP_PROPERTY("gtk-interface-contrast", InterfaceContrast)
   _WRAP_PROPERTY("gtk-interface-reduced-motion", ReducedMotion)
+  _WRAP_PROPERTY("gtk-accent-color", Gdk::RGBA)
 };
 
 } //namespace Gtk
