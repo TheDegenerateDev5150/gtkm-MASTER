@@ -26,17 +26,17 @@ _PINCLUDE(glibmm/private/object_p.h)
 namespace Gtk
 {
 
-/** Add tips to your widgets
+/** Represents a widget tooltip.
  *
- * Basic tooltips can be realized simply by using set_tooltip_text()
- * or set_tooltip_markup() without any explicit tooltip object.
+ * Basic tooltips can be realized simply by using Gtk::Widget::set_tooltip_text()
+ * or Gtk::Widget::set_tooltip_markup() without any explicit tooltip object.
  *
  * When you need a tooltip with a little more fancy contents, like
  * adding an image, or you want the tooltip to have different contents
  * per Gtk::TreeView row or cell, you will have to do a little more work:
  *
- * - Call Gtk::Widget:set_has_tooltip(); this will
- * make GTK+ monitor the widget for motion and related events
+ * - Call Gtk::Widget::set_has_tooltip(); this will
+ * make GTK monitor the widget for motion and related events
  * which are needed to determine when and where to show a tooltip.
  *
  * - Connect to Gtk::Widget::signal_query_tooltip(). This signal
@@ -48,8 +48,8 @@ namespace Gtk
  * the tooltip's markup, setting an image from a named icon, or
  * even putting in a custom widget.
  *
- * - Return true from your query-tooltip handler. This causes
- * the tooltip to be show. If you return false, it will not be shown.
+ * - Return <tt>true</tt> from your query-tooltip handler. This causes
+ * the tooltip to be show. If you return <tt>false</tt>, it will not be shown.
  */
 class GTKMM_API Tooltip : public Glib::Object
 {
